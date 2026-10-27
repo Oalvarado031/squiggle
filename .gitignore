@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+*.tgz
+*.vsix
+!site/public/downloads/*.vsix
+test-results/
+playwright-report/
+.DS_Store
+/out/

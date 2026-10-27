@@ -1,0 +1,5 @@
+paper ink
+every frame
+  repeat 48 as i
+    a = i / 48 * turn + t * 0.3
+    dot cos(a) * 140, sin(a * 2) * 90, 3, hue(i * 7)

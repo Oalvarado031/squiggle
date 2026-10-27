@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`determinism > orbit-garden: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "4f7a0afdd095d0ff",
+    "5a4f31f2cf58c3f9",
+    "03f400cb9b9dfcfc",
+  ],
+  "slug": "orbit-garden",
+}
+`;
