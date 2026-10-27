@@ -11,3 +11,4 @@ playwright-report/
 /out/
 packages/cli/LICENSE
 !action/squiggle-render/dist/
+.admin-token
