@@ -155,6 +155,12 @@ function drawCode(ctx: SKRSContext2D, L: Layout, n: number, t: number) {
   let col = 0;
   const shown = code.slice(0, n);
   for (const tok of highlight(shown)) {
+    // wrap before a token that would cross the edge, never inside it
+    if (tok.text !== '\n' && tok.cls !== 'space' && col > 0 && col + tok.text.length > maxCols && tok.text.length < maxCols) {
+      cy += lh;
+      cx = x + 70 + charW * 2;
+      col = 2;
+    }
     for (const ch of tok.text) {
       if (ch === '\n') {
         line++;
