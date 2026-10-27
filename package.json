@@ -13,9 +13,13 @@
     "gen": "node scripts/gen-examples.mjs",
     "test": "npm run gen && vitest run",
     "typecheck": "tsc --noEmit -p packages/core && tsc --noEmit -p site && tsc --noEmit -p site/src/worker",
-    "build:cli": "npm run build -w squigglelang",
+    "build:cli": "npm run build -w squigglelang && node scripts/build-action.mjs",
     "build:site": "npm run build -w squiggle-site",
-    "deploy": "npm run deploy -w squiggle-site"
+    "deploy": "npm run deploy -w squiggle-site",
+    "e2e": "playwright test",
+    "vsix": "npm run package -w squiggle-vscode",
+    "record": "npm run gen && esbuild scripts/record.ts --bundle --platform=node --format=esm --outfile=out/record.mjs --external:@napi-rs/canvas --external:@resvg/resvg-wasm --log-level=warning && node out/record.mjs",
+    "hero-gif": "esbuild scripts/hero-gif.ts --bundle --platform=node --format=esm --outfile=out/hero-gif.mjs --external:@napi-rs/canvas --log-level=warning && node out/hero-gif.mjs"
   },
   "devDependencies": {
     "@expo-google-fonts/fraunces": "^0.4.1",

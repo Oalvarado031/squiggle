@@ -1,0 +1,9 @@
+paper night
+dot 150, 170, 30, bone
+every frame
+  seed 5
+  repeat 12 as b
+    h = rand(80, 400)
+    box b * 40 - 220, h / 2 - 256, 36, h, coal
+    repeat h / 7 as j
+      box b * 40 - 230 + j % 3 * 10, floor(j / 3) * 20 - 236, 5, 9, fade(ochre, sin(t / 2 + rand(99)) * 2 - 1)

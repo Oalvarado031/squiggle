@@ -1,0 +1,10 @@
+paper bone
+make frond p, a, s
+  q = p + polar(s, a)
+  width s / 8
+  line p, q, moss
+  if s > 3
+    frond q, a + 1, s * 0.38
+    frond q, a - 1, s * 0.38
+    frond q, a + 0.07, s * 0.85
+frond (-30, -250), 1.45, 66

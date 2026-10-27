@@ -1,0 +1,9 @@
+paper bone
+dot 110, 140, 44, ember
+every frame
+  repeat 5 as k
+    pts = [(-256, -256)]
+    repeat 33 as i
+      x = i * 16 - 256
+      pts = pts + [(x, 70 - k * 60 - abs(noise(x / 220 + k * 4 - t / 12, k)) * 120)]
+    shape pts + [(256, -256)], mix(sand, clay, k / 4)

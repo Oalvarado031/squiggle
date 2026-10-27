@@ -1,0 +1,10 @@
+paper night
+repeat 140
+  r = rand(1, 5) ^ 2.4
+  dot rand(-256, 256), rand(-256, 256), r, fade(sand, 2 / r)
+every frame
+  repeat 16
+    x = rand(-240, 240)
+    y = 290 - (t * 50 + i * 37 - sin(t * turn + i) * 8) % 660
+    line x, y, x, y + 60, fade(bone, 0.2)
+    dot x, y, 6, bone

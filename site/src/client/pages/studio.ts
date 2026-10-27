@@ -40,7 +40,10 @@ async function initialCode(): Promise<string> {
   }
   const draft = store('sq-draft');
   if (draft && draft.trim()) return draft;
-  return EXAMPLES[Math.floor(Math.random() * EXAMPLES.length)].code;
+  // First visit: the same piece the page already printed (see vite.config.ts).
+  const first = EXAMPLES.find((e) => e.slug === 'orbit-garden') ?? EXAMPLES[0];
+  titleHint = first.title;
+  return first.code;
 }
 
 const code0 = await initialCode();
@@ -172,6 +175,10 @@ scrub.addEventListener('change', endScrub);
 
 // ---- the editor: re-run 150 ms after the last keystroke ----
 let timer = 0;
+// The page printed the first piece as plain text; it stays on top until the editor has painted.
+const standin = document.querySelector('.editor-standin');
+if (standin && code0.trimEnd() !== standin.textContent?.trimEnd()) standin.remove();
+void document.fonts.ready.then(() => requestAnimationFrame(() => requestAnimationFrame(() => standin?.remove())));
 const editor = createEditor({
   parent: $('#editor'),
   doc: code0,

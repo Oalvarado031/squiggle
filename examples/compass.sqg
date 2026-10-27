@@ -1,0 +1,13 @@
+width 6
+ring 0, 0, 206
+width 2
+repeat 72 as i
+  line 0, 150 + min(i % 9, 1) * 28, 0, 194
+  spin turn / 72
+write "N", 0, 126, 34
+every frame
+  spin sin(t * turn / 3) * 0.3
+  for c in [ember, ink]
+    shape [(0, 150), (-18, 0), (18, 0)], c
+    spin pi
+  dot 0, 0, 9, bone

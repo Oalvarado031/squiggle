@@ -1,0 +1,8 @@
+every frame
+  repeat 23 as r
+    repeat 11 as c
+      x = c * 50 - 250 + r % 2 * 25
+      y = 280 - r * 25
+      w = sin(x / 90 + y / 60 - t * turn / 3)
+      repeat 4 as k
+        dot x, y, 28 - k * 7, [mix(rust, ochre, w), chalk][k % 2]

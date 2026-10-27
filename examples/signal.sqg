@@ -1,0 +1,13 @@
+move 0, 40
+width 4
+path [(-70, -270), (0, 0), (70, -270)]
+zig = [(0, 0)]
+repeat 8 as i
+  zig = zig + [((i % 2 - 0.5) * i * 18, -i * 34)]
+path zig
+dot 0, 0, 12, ember
+every frame
+  width 5
+  repeat 5 as k
+    r = (t / 3 + k / 5) % 1
+    ring 0, 0, r * 230 + 24, fade(ink, 1 - r)

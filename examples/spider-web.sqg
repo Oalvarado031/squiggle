@@ -1,0 +1,12 @@
+paper night
+color bone
+width 1
+repeat 16
+  line 0, 0, polar(330, i * turn / 16)
+pts = []
+repeat 190
+  pts = pts + [polar(16 + i * 1.25 + noise(i / 7) * 8, i * turn / 16)]
+path pts
+seed 3
+repeat 50
+  dot polar(rand(20, 250), floor(rand(16)) * turn / 16), rand(1, 4), sky

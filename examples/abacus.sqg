@@ -1,0 +1,9 @@
+box 0, 0, 480, 440, rust
+box 0, 0, 444, 404, bone
+every frame
+  repeat 8 as r
+    y = 168 - r * 48
+    line -222, y, 222, y, ash
+    d = 5 + sin(t * turn / 3 + r) * 5
+    repeat 10 as j
+      dot j * 30 - 200 + ease(clamp(j + 1 - d)) * 130, y, 15, [ember, ink][r % 2]

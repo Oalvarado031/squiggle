@@ -1,0 +1,9 @@
+dot 0, 100, 60, ember
+every frame
+  p = t * turn / 3
+  repeat 6 as k
+    pts = [(-256, -256)]
+    repeat 33 as i
+      y = sin(i / (2.5 + k) - p + k) * (5 + k * 3) + sin(p) * 10 + 60 - k * 44
+      pts = pts + [(i * 16 - 256, y)]
+    shape pts + [(256, -256)], fade(sea, 0.32)

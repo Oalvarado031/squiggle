@@ -10,3 +10,4 @@ playwright-report/
 .DS_Store
 /out/
 packages/cli/LICENSE
+!action/squiggle-render/dist/

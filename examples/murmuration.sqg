@@ -1,0 +1,8 @@
+repeat 8
+  box 0, 224 - i * 64, 512, 64, mix(rose, bone, i / 7)
+every frame
+  repeat 800
+    k = i / 400
+    x = noise(k, t / 6) * 320 + rand(-30, 30) * rand
+    y = noise(k + 9, t / 6) * 220 + rand(-30, 30) * rand + 30
+    dot x, y, rand(1.2, 2.6), ink

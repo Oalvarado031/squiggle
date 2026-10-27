@@ -1,0 +1,8 @@
+paper ink
+write "hello, wall", 0, 40, 64, bone
+every frame
+  pts = []
+  repeat 61
+    pts = pts + [(i * 6 - 180, sin(i / 4 - t * turn / 1.5) * 12 * sin(i / 19) - 50)]
+  width 6
+  path pts, ember

@@ -1,0 +1,96 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: language, server and site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build:site
+      - name: The action ships the current CLI bundle
+        run: npm run build:cli && git diff --exit-code action/squiggle-render/dist
+
+  pack:
+    name: pack squigglelang
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build:cli
+      - run: npm pack --pack-destination "$GITHUB_WORKSPACE"
+        working-directory: packages/cli
+      - uses: actions/upload-artifact@v4
+        with:
+          name: squigglelang
+          path: squigglelang-*.tgz
+
+  npx:
+    name: npx squigglelang on ${{ matrix.os }}
+    needs: pack
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [20]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: squigglelang
+          path: pkg
+      # A clean folder with nothing installed, the way a first-time user runs it.
+      - name: Render with npx and no install
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/try"
+          cp pkg/squigglelang-*.tgz "$RUNNER_TEMP/try/"
+          cp examples/orbit-garden.sqg "$RUNNER_TEMP/try/"
+          cd "$RUNNER_TEMP/try"
+          TGZ="./$(ls squigglelang-*.tgz)"
+          npx --yes "$TGZ" render orbit-garden.sqg --out orbit.png
+          npx --yes "$TGZ" render tide --seconds 2 --out tide.mp4
+          npx --yes "$TGZ" render tide --seconds 2 --out tide.gif
+          npx --yes "$TGZ" check orbit-garden.sqg
+          npx --yes "$TGZ" squeeze orbit-garden.sqg
+          node -e "const fs=require('fs');for(const[f,m]of[['orbit.png','PNG'],['tide.mp4','ftyp'],['tide.gif','GIF']]){const b=fs.readFileSync(f);const sig=f.endsWith('.mp4')?b.toString('latin1',4,8):f.endsWith('.png')?b.toString('latin1',1,4):b.toString('latin1',0,3);if(sig!==m){console.error(f,'is not a',m);process.exit(1)}console.log(f,b.length,'bytes')}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: renders-${{ matrix.os }}
+          path: ${{ runner.temp }}/try/*.*
+
+  action:
+    name: squiggle-render action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./action/squiggle-render
+        id: render
+        with:
+          path: examples
+          out: renders
+          size: '512'
+      - name: Every starter became a PNG
+        run: |
+          test "$(ls renders/*.png | wc -l)" -eq "$(ls examples/*.sqg | wc -l)"
+          echo "${{ steps.render.outputs.files }}" | head -3

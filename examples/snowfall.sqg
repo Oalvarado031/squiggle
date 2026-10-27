@@ -1,0 +1,8 @@
+paper night
+dot -140, -560, 360, bone
+dot 220, -600, 400, chalk
+every frame
+  repeat 200
+    s = rand(1, 4)
+    y = 270 - (t * s * 20 + rand(540)) % 540
+    dot rand(-256, 256) + sin(t + y / 50) * 10, y, s, fade(chalk, s / 4)

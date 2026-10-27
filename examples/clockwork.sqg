@@ -1,0 +1,15 @@
+grow 1.3
+make gear x, y, n, a
+  move x, y
+  spin a
+  dot 0, 0, n * 5
+  repeat n
+    spin turn / n
+    box n * 5, 0, 22, 15
+  dot 0, 0, n, ember
+  spin -a
+every frame
+  a = t * turn / 12
+  gear -50, 0, 20, a
+  gear 138, 94, 12, 5 - a * 5 / 3
+  gear -47, -209, 8, 0.38 - a * 2.5

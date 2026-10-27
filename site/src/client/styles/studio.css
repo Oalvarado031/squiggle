@@ -96,6 +96,7 @@
   gap: 10px;
 }
 .editor {
+  position: relative;
   border: 1px solid var(--rule-strong);
   border-radius: var(--radius);
   overflow: hidden;
@@ -104,6 +105,24 @@
 }
 .editor .cm-editor {
   height: 100%;
+}
+/* the code printed into the page, until the editor takes over */
+.editor-standin {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--sheet);
+  overflow: hidden;
+  /* system mono, so it paints with the first frame instead of waiting for the web font */
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin: 0;
+  padding: 14px 6px 14px 40px;
+  min-height: 100%;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 .problem {
   border-left: 3px solid var(--ember);

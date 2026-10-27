@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <!-- @head -->
+    <link rel="preload" href="/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin />
     <title>Studio · Squiggle</title>
     <meta name="description" content="Write Squiggle on the left, watch it move on the right. Share it as a link, pin it to the wall, or save a PNG or a 6-second clip." />
     <meta property="og:title" content="Squiggle studio" />
@@ -24,13 +25,13 @@
           <span class="stamp" id="stamp" hidden>fits in a post</span>
           <div class="meter" id="meter" role="meter" aria-valuemin="0" aria-valuemax="280" aria-valuenow="0" aria-label="Characters, out of the 280 a post can hold">
             <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="track" cx="22" cy="22" r="18"/><circle class="fill" id="meter-fill" cx="22" cy="22" r="18" pathLength="100" transform="rotate(-90 22 22)"/></svg>
-            <span class="meter-text"><b id="meter-n">0</b><span> / 280</span></span>
+            <span class="meter-text"><b id="meter-n">123</b><span> / 280</span></span>
           </div>
         </div>
       </div>
       <div class="studio-grid">
         <section class="pane code-pane" aria-label="Code">
-          <div class="editor" id="editor"></div>
+          <div class="editor" id="editor"><!-- @firstcode --></div>
           <div class="problem" id="problem" role="alert" hidden></div>
           <details class="console" id="console">
             <summary><span>Console</span><span class="console-count" id="console-count"></span></summary>

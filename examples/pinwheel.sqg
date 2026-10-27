@@ -1,0 +1,9 @@
+width 8
+line 0, 0, 20, -256, clay
+every frame
+  spin -t * pi / 3
+  repeat 4
+    spin turn / 4
+    shape [(0, 0), (0, 170), (-120, 120)], [ember, ochre][i % 2]
+    shape [(0, 0), (-120, 120), (-60, 40)], [rust, clay][i % 2]
+  dot 0, 0, 10, ink

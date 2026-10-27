@@ -1,0 +1,11 @@
+width 5
+repeat 27
+  line i * 20 - 260, -256, i * 20 - 260, 240, ash
+every frame
+  u = t / 1.5
+  box cos(u * pi) * 220, 0, 50, 12
+  grow 1, 0.4
+  repeat 17 as k
+    n = floor(u) - k
+    repeat 14
+      dot i * 40 - 260 + n % 2 * 20, (n - u) * 40, 17, mix(clay, ochre, n % 3 / 2)

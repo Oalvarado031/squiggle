@@ -1,0 +1,10 @@
+{
+  "name": "squiggle-render-action",
+  "private": true,
+  "type": "module",
+  "description": "The squiggle-render GitHub Action: the Squiggle CLI bundle plus its one native dependency.",
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/canvas": "1.0.13"
+  }
+}

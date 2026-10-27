@@ -1,0 +1,10 @@
+paper night
+repeat 160
+  dot rand(-256, 256), rand(-256, 256), rand(1.5), ash
+stars = [(-160, 120), (-70, 150), (0, 90), (50, -20), (170, 0)]
+when click
+  stars = stars + [mouse]
+every frame
+  path stars, fade(sky, 0.4)
+  for p in stars
+    dot p, 5 + sin(t * 3 + p.x) * 1.5, bone

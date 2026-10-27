@@ -1,0 +1,10 @@
+paper night
+every frame
+  s = sin(t * turn / 1.5)
+  move 0, 110 + s * 10
+  grow 1, 1 - s / 9
+  dot 0, 0, 110, fade(rose, 0.85)
+  box 0, -60, 240, 120, night
+  repeat 13 as k
+    repeat 36 as j
+      dot k * 18 - 108 + sin(j / 6 - t * 4 + k) * j / 2, j * -8, 2, fade(lilac, 0.6)

@@ -1,0 +1,12 @@
+paper sea
+make arm p, a, n
+  q = p + polar(rand(35, 60), a + sin(t + n) / 9)
+  width n * 3 + 5
+  line p, q
+  if n > 0
+    for s in [1, -1]
+      arm q, a + s * rand(0.6), n - 1
+every frame
+  repeat 5
+    color mix(rose, ochre, i / 4)
+    arm (i * 100 - 200, -256), rand(1, 2.1), 5

@@ -1,0 +1,11 @@
+line 0, 256, 0, 210
+make hang p, w, n
+  e = cos(t / n + n) * w
+  for s in [-e, e]
+    q = p + (s, rand(-130, -70))
+    path [p, p + (s, 0), q]
+    dot q, 24 / n / n, pick([ember, ochre, sea, ink])
+    if n > 1
+      hang q, w * 0.6, n - 1
+every frame
+  hang (0, 210), 120, 3

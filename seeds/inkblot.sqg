@@ -1,0 +1,11 @@
+paper bone
+n = 1
+when key "space"
+  n += 1
+every frame
+  for s in [1, -1]
+    repeat 300
+      x = i % 12 * 12
+      y = floor(i / 12) * 12 - 144
+      r = noise(x / 50 + n * 9, y / 50, t / 4) * 30 - x / 10 + 8
+      dot s * x, y, max(0, r), ink

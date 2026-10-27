@@ -1,0 +1,10 @@
+every frame
+  repeat 9 as k
+    x = k * 52 - 208
+    w = noise(k / 2, t / 3) * 50
+    line x, -256, x + w, 80, ochre
+    repeat 16 as j
+      s = j % 2 - 0.5
+      p = (x + w * (1 + j / 40) + s * 14, 80 + j * 9)
+      dot p, 6, ochre
+      line p, p + (s * 20 + w / 4, 40), sand

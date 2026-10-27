@@ -1,0 +1,11 @@
+blow = 0
+when click
+  blow = t
+box 0, -128, 4, 256, moss
+width 1
+every frame
+  repeat 90
+    d = max(0, (t - blow) % 6 - i / 30)
+    p = polar(120, i * 2.4) + (d * 70, d * 40 + sin(d + i) * 20)
+    line p - polar(110 / (1 + d * 9), i * 2.4), p, ash
+    dot p, 9, fade(ash, 0.25)

@@ -1,0 +1,13 @@
+paper bone
+pts = []
+repeat 241
+  a = i * turn / 70
+  pts = pts + [polar(5.6 * 3 ^ (a / turn), a)]
+shape pts, sand
+width 3
+path pts, ink
+width 2
+repeat 26
+  a = i * 0.59 + turn
+  r = 5.6 * 3 ^ (a / turn)
+  path [polar(r / 3, a), polar(r / 1.7, a + 0.2), polar(r, a)], clay

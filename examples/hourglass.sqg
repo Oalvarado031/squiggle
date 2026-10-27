@@ -1,0 +1,12 @@
+glass = [(0, 0), (-90, 180), (90, 180), (0, 0)]
+every frame
+  f = clamp(t % 3 / 2)
+  spin ease(t % 3 - 2) * pi
+  repeat 2
+    spin pi
+    path glass
+    box 0, 190, 230, 20
+  color ochre
+  shape [(-90, -180), (90, -180), (0, f * 125 - 180)]
+  grow sqrt(1 - f) * 0.83
+  shape glass

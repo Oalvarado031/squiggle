@@ -1,0 +1,9 @@
+paper night
+every frame
+  repeat 6
+    spin turn / 6
+    repeat 2
+      grow 1, -1
+      repeat 6 as i
+        p = polar(30 + i * 36, noise(i, t / 4) * 0.4 + 0.25)
+        shape [p, p + polar(60, t / 2 + i), p + polar(50, i * 2)], fade(hue(i * 50 + t * 30, 0.5), 0.5)

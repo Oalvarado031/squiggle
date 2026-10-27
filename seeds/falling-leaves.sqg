@@ -1,0 +1,9 @@
+paper bone
+every frame
+  repeat 22
+    s = rand(0.8, 1.5)
+    keep
+      move rand(-240, 240) + sin(t + i) * 30, 300 - (t * 30 * s + i * 97) % 600
+      spin t * s + i
+      grow s
+      shape [(0, 26), (12, 6), (8, -12), (0, -20), (-8, -12), (-12, 6)], pick([rust, ochre, clay])

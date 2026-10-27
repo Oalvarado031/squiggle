@@ -1,0 +1,13 @@
+paper sea
+dot -150, 150, 60, moss
+at = (0, 0)
+from = 0
+when click
+  at = mouse
+  from = t
+every frame
+  d = (t - from) % 3
+  repeat 3
+    ring at, d * 120 / (i + 1), fade(chalk, 1 - d / 3)
+  repeat 20
+    dot polar(140, t / 2 + i % 2 * pi - i / 17), 22 - i, [ember, chalk][i % 2]

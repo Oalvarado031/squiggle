@@ -1,0 +1,7 @@
+paper night
+every frame
+  spin t * turn / 9
+  repeat 150
+    u = i / 150 * turn
+    z = -sin(3 * u)
+    dot (sin(u) + 2 * sin(2 * u)) * 62, (cos(u) - 2 * cos(2 * u)) * 62, 7 + z * 2, mix(plum, ember, z / 2 + 0.5)

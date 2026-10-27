@@ -1,0 +1,58 @@
+name: squiggle-render
+description: Render every .sqg file in a repository to a PNG (for READMEs) with the Squiggle CLI.
+author: Squiggle
+branding:
+  icon: edit-3
+  color: orange
+inputs:
+  path:
+    description: Folder to search for .sqg files.
+    default: '.'
+  out:
+    description: Folder for the PNGs. Empty means next to each .sqg file.
+    default: ''
+  size:
+    description: PNG size in pixels.
+    default: '1024'
+  t:
+    description: The moment (in seconds) to draw for pieces that move.
+    default: '1'
+  commit:
+    description: Commit and push the PNGs back to the branch ("true" or "false").
+    default: 'false'
+  message:
+    description: Commit message when commit is "true".
+    default: 'Render Squiggle pieces'
+outputs:
+  files:
+    description: The PNGs written, one per line.
+    value: ${{ steps.render.outputs.files }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install the renderer
+      shell: bash
+      run: npm install --prefix "$GITHUB_ACTION_PATH" --omit=dev --no-audit --no-fund --loglevel=error
+    - name: Render .sqg files
+      id: render
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/render-all.mjs"
+      env:
+        SQG_PATH: ${{ inputs.path }}
+        SQG_OUT: ${{ inputs.out }}
+        SQG_SIZE: ${{ inputs.size }}
+        SQG_T: ${{ inputs.t }}
+    - name: Commit the PNGs
+      if: inputs.commit == 'true'
+      shell: bash
+      env:
+        SQG_MESSAGE: ${{ inputs.message }}
+        SQG_FILES: ${{ steps.render.outputs.files }}
+      run: |
+        git config user.name "squiggle-render"
+        git config user.email "squiggle-render@users.noreply.github.com"
+        while IFS= read -r f; do [ -n "$f" ] && git add -- "$f"; done <<< "$SQG_FILES"
+        if git diff --cached --quiet; then echo "Nothing new to commit."; else git commit -m "$SQG_MESSAGE" && git push; fi

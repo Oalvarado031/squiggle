@@ -183,6 +183,8 @@ export class Interp {
   private budget = 0;
   private depth = 0;
   private loopAt: Pos | null = null;
+  /** scopes of the lines that called each running make, innermost last */
+  private callers: Array<{ fn: string; scope: Scope }> = [];
   private logs: string[] = [];
   private warnings: Warning[] = [];
   private warned = new Set<string>();
@@ -534,8 +536,9 @@ export class Interp {
         this.drawingAllowed(name, at);
         const { nums, color } = this.numbersAndColor(spec, args, at);
         if (!this.finite(name, nums, at)) return null;
-        const r = q(Math.abs(nums[2]));
-        if (r === 0) return null;
+        // A negative size draws nothing, so shrinking things (size = 1 - t) simply vanish.
+        const r = q(nums[2]);
+        if (r <= 0) return null;
         const c = toCss(color ?? st.color);
         if (name === 'dot') this.emit({ k: 'dot', m: snapMat(st.m), x: q(nums[0]), y: q(nums[1]), r, c }, at);
         else this.emit({ k: 'ring', m: snapMat(st.m), x: q(nums[0]), y: q(nums[1]), r, c, w: q(st.width) }, at);
@@ -584,8 +587,8 @@ export class Interp {
         }
         if (nums.length < 2 || nums.length > 3) throw rt(`write needs the text, then x and y (got ${nums.length} number${nums.length === 1 ? '' : 's'})`, at, spec.usage);
         if (!this.finite(name, nums, at)) return null;
-        const size = q(Math.abs(nums[2] ?? 18));
-        if (size === 0 || s === '') return null;
+        const size = q(nums[2] ?? 18);
+        if (size <= 0 || s === '') return null;
         this.emit({ k: 'text', m: snapMat(st.m), s, x: q(nums[0]), y: q(nums[1]), size, c: toCss(color ?? st.color) }, at);
         return null;
       }
@@ -747,6 +750,12 @@ export class Interp {
     const color = PALETTE_COLORS[name];
     if (color) return color;
     if (COMMAND_SPECS[name]) throw rt(`${name} is a command, so it goes at the start of a line`, at, COMMAND_SPECS[name].usage);
+    const caller = this.callers[this.callers.length - 1];
+    if (caller?.scope.find(name)) {
+      const fn = this.fns.get(caller.fn);
+      const params = [...(fn?.params ?? []), name].join(', ');
+      throw rt(`${name} belongs to the lines that called ${caller.fn}, so ${caller.fn} can't see it`, at, `hand it over: make ${caller.fn} ${params}, then ${caller.fn} …, ${name}`);
+    }
     const known = [...this.allNames()];
     const guess = closest(name, known);
     const syn = SYNONYMS[name.toLowerCase()];
@@ -784,6 +793,7 @@ export class Interp {
     const scope = new Scope(this.globalsNow());
     fn.params.forEach((p, k) => scope.vars.set(p, args[k]));
     const outer = this.active;
+    this.callers.push({ fn: fn.name, scope: outer });
     this.active = scope;
     this.depth++;
     try {
@@ -791,6 +801,7 @@ export class Interp {
     } finally {
       this.depth--;
       this.active = outer;
+      this.callers.pop();
     }
   }
 
@@ -801,6 +812,11 @@ export class Interp {
   }
 
   binary(op: string, a: Value, b: Value, at: Pos): Value {
+    // In arithmetic, true and false count as 1 and 0: (i % 2 == 0) * 20
+    if ('+-*/%^'.includes(op) && (typeof a === 'boolean' || typeof b === 'boolean') && (typeof a === 'number' || typeof a === 'boolean') && (typeof b === 'number' || typeof b === 'boolean')) {
+      a = Number(a);
+      b = Number(b);
+    }
     switch (op) {
       case '+':
         if (typeof a === 'number' && typeof b === 'number') return a + b;

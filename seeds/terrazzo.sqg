@@ -1,0 +1,12 @@
+n = 9
+when click
+  n += 1
+every frame
+  seed n
+  repeat 150
+    c = (rand(-280, 280), rand(-280, 280))
+    r = rand(4, 22)
+    pts = []
+    repeat 5 as k
+      pts = pts + [c + polar(r * rand(0.6, 1), k * turn / 5)]
+    shape pts, pick([ember, ochre, sea, coal, clay, rose, ash])

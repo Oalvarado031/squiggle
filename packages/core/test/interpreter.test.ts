@@ -231,9 +231,21 @@ describe('drawing commands', () => {
     expect(ops('dot 0, 0, 1, fade(ember, 0.5)')[0]).toMatchObject({ c: 'rgba(228,87,46,0.5)' });
   });
 
-  it('skips zero-size dots and treats negative sizes as positive', () => {
+  it('draws nothing for zero or negative sizes', () => {
     expect(ops('dot 0, 0, 0')).toEqual([]);
-    expect(ops('dot 0, 0, -3')[0]).toMatchObject({ r: 3 });
+    expect(ops('dot 0, 0, -3')).toEqual([]);
+    expect(ops('ring 0, 0, -40')).toEqual([]);
+    expect(ops('write "a", 0, 0, -5')).toEqual([]);
+  });
+
+  it('counts true and false as 1 and 0 in arithmetic', () => {
+    expect(said('say (3 > 2) * 20 + false')).toBe('20');
+  });
+
+  it("explains that a make can't see its caller's loop counter", () => {
+    const e = error('make f\n  dot i * 20, 0, 5\nrepeat 3 as i\n  f');
+    expect(e.message).toBe("i belongs to the lines that called f, so f can't see it");
+    expect(e.hint).toBe('hand it over: make f i, then f …, i');
   });
 
   it('skips shapes with infinite numbers and leaves a note', () => {

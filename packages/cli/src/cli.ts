@@ -72,6 +72,13 @@ function num(flags: Flags, name: string, fallback: number, min: number, max: num
   return n;
 }
 
+/** Folders on the command line stand for the .sqg files inside them. */
+function expand(refs: string[]): string[] {
+  return refs.flatMap((r) =>
+    existsSync(r) && statSync(r).isDirectory() ? readdirSync(r).filter((f) => f.endsWith('.sqg')).sort().map((f) => join(r, f)) : [r],
+  );
+}
+
 /** a .sqg path, or the name of a starter piece */
 function load(ref: string): { name: string; code: string; path?: string } {
   if (existsSync(ref) && statSync(ref).isFile()) {
@@ -96,7 +103,7 @@ function compile(name: string, code: string): Interp {
 }
 
 async function render(flags: Flags): Promise<void> {
-  const refs = flags._.slice(1);
+  const refs = expand(flags._.slice(1));
   if (!refs.length) fail('render needs a piece, like: squiggle render piece.sqg --out piece.png');
   const seconds = flags.seconds !== undefined ? num(flags, 'seconds', 6, 0.1, 60) : 0;
   const out = typeof flags.out === 'string' ? flags.out : undefined;
@@ -138,7 +145,7 @@ async function render(flags: Flags): Promise<void> {
 }
 
 function check(flags: Flags): void {
-  const refs = flags._.slice(1);
+  const refs = expand(flags._.slice(1));
   if (!refs.length) fail('check needs at least one piece');
   let bad = 0;
   for (const ref of refs) {
@@ -218,10 +225,7 @@ function examplesCmd(flags: Flags): void {
 }
 
 async function sheetCmd(flags: Flags): Promise<void> {
-  let refs = flags._.slice(1);
-  if (refs.length === 1 && existsSync(refs[0]) && statSync(refs[0]).isDirectory()) {
-    refs = readdirSync(refs[0]).filter((f) => f.endsWith('.sqg')).sort().map((f) => join(refs[0], f));
-  }
+  let refs = expand(flags._.slice(1));
   if (!refs.length) refs = EXAMPLES.map((e) => e.slug);
   const out = typeof flags.out === 'string' ? flags.out : 'sheet.png';
   const { sheet } = await import('./raster.ts');

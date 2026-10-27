@@ -27,3 +27,29 @@ Numbered so code and commits can point at them. Newest last.
 **12. Text in pieces uses Fraunces Regular**, the same static TTF in the browser worker, the CLI and the server renderer, so `write` looks the same everywhere.
 
 **13. CLI stack.** `@napi-rs/canvas` (prebuilt for macOS, Linux, Windows, so `npx` needs no build tools), `gifenc` (bundled) for GIF, `h264-mp4-encoder` (WASM) for MP4. Clips render offline at a fixed fps (`t = frame / fps`), so the same command gives the same file. A starter name works wherever a file path does (`squiggle render tide`).
+
+**14. Small language changes after the starters were written.** A negative size draws nothing (it used to be flipped positive, so a shrinking ripple came back). `true` and `false` count as 1 and 0 in arithmetic (`(i % 2 == 0) * 20`). When a `make` reads a name that only exists in the lines that called it (a loop counter, usually), the error says so and shows how to pass it in. None of the 42 pieces' frame hashes changed.
+
+**15. One Worker serves everything.** Static pages are built by Vite; the Worker runs first on every request (`run_worker_first`) and fills in what changes with HTMLRewriter: the weekly theme, the CA chip (`TOKEN_MINT`), config links, and for `/p/<id>` the title, description, OG image and the piece's JSON. `/studio?c=…` gets an OG card of the code in the link. CSP allows only same-origin scripts plus the hash of the one inline script (theme before paint); styles allow inline because CodeMirror injects them.
+
+**16. User code runs only in Web Workers.** One worker per page owns every interpreter and draws into OffscreenCanvases. Before any piece runs, `fetch`, `XMLHttpRequest`, `WebSocket`, `importScripts`, `indexedDB`, `caches` and friends are removed from the worker (the language can't reach JavaScript anyway). Squeeze and the learn goal checks also execute code, so they run there as jobs. Without OffscreenCanvas the worker still runs the code and the page only draws the display list. A watchdog restarts the worker if it stops answering for 6 s.
+
+**17. The wall never runs anyone's code.** Pinning renders a still (t = 1) and a 3-second preview sprite on the server: 45 frames at 15 fps, 320 px each in a 9-column grid, or fewer frames (down to 12) for pieces with many shapes (150,000 shapes across the preview at most), and at most 6,000,000 steps. Cards show the still and step through the sprite while on screen. The piece page runs the code live.
+
+**18. Pinning limits.** Code up to 2,000 characters (pieces over 280 can be pinned; they just don't get the stamp), title up to 60, an optional X handle (`[A-Za-z0-9_]{1,15}`, shown as text; `squiggle` is reserved for the seed script's admin token). Six pins an hour and 30 a day per network. The same code from the same network within 10 minutes returns the existing piece. A word filter reads the title, the handle, and every string and comment in the code.
+
+**19. Likes.** One per browser (a random 24-character id in localStorage) and at most three per network on one piece (NAT-friendly), plus 240 likes an hour per network (KV counter). Networks are identified by `sha256(IP_SALT | ip)`; raw IPs are never stored.
+
+**20. "Top today" and "top week"** rank by likes received in the window, so an older piece can climb back; pieces pinned in the window are listed even with no likes yet.
+
+**21. Weekly prompt.** Weeks run Monday to Monday (UTC, ISO week ids). The rotation starts with "weather" on 2026-W44; a row in `prompts` overrides any week. A Monday cron freezes last week's top three entries by likes (also done lazily if the cron missed), and their pages get a stamp ("1st · weather · week 44").
+
+**22. OG cards** are 1200 × 630: the piece at t = 1 on a taped sheet, the title, the handle, the count and the stamp, composed as SVG and rasterized with resvg, cached in R2. Share-link cards are cached by code hash and rendered at most 60 an hour per network.
+
+**23. Post on X** puts the code itself in the post when the code, a newline and the link (23) fit in 280; otherwise the title, the count and the link.
+
+**24. Performance.** Each page's CSS (about 15 KB) is inlined. The studio prints its first-visit piece (orbit-garden) into the HTML as plain text in a system monospace font; it is the largest paint, and CodeMirror replaces it once fonts are ready. Fonts are self-hosted with `font-display: swap`; only JetBrains Mono is preloaded, on pages that show code.
+
+**25. Exports** come from a fresh interpreter (clicks and keys pressed so far don't leak in): PNG at 1024 px, and 6-second clips at 30 fps as MP4 (WebCodecs H.264 through mp4-muxer) or, where the browser can't encode H.264, GIF at 20 fps.
+
+**26. Launch assets are drawn, not screen-recorded.** `npm run record` draws the 20-second clip frame by frame with the real interpreter and the real OG card renderer, then encodes vertical and horizontal MP4s with ffmpeg; `npm run hero-gif` makes the README GIF. Re-running gives the same video.

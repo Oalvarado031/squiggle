@@ -1,0 +1,7 @@
+every frame
+  p = t * turn / 3
+  repeat 20 as j
+    repeat 26 as i
+      x = i * 20 - 250
+      w = sin(x / 50 - p + j / 2)
+      dot x, j * 24 - 228 + w * 10, 9 - j / 3 + w * 2, mix(sea, sky, j / 19)

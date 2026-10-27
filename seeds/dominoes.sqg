@@ -1,0 +1,10 @@
+line -256, -120, 256, -120
+every frame
+  w = 11 * (0.5 - cos(t * turn / 3) / 2)
+  repeat 10 as i
+    keep
+      move i * 46 - 184, -120
+      spin -clamp(w - i) * 0.42
+      box -15, 100, 30, 200, [ember, ink][min(i, 1)]
+      dot -15, 150, 5, chalk
+      dot -15, 50, 5, chalk

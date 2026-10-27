@@ -1,0 +1,11 @@
+paper ink
+make bump c, w
+  max(0, 1 - abs(u - c) / w)
+every frame
+  width 4
+  last = (-240, 0)
+  repeat 121 as i
+    u = i % 40
+    p = (i * 4 - 240, bump(20, 1) * 150 - bump(22, 2) * 50 + bump(30, 4) * 30)
+    line last, p, fade(ember, 1 - (t * 40 - i) % 120 / 108)
+    last = p

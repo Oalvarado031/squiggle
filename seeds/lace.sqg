@@ -1,0 +1,16 @@
+paper plum
+color bone
+width 2
+every frame
+  spin t / 20
+  repeat 4 as k
+    n = 8 + k * 8
+    repeat n
+      spin turn / n
+      keep
+        move 0, 40 + k * 56
+        grow 0.45, 1
+        ring 0, 0, 27
+      dot 0, 76 + k * 56, 3.5
+  ring 0, 0, 16
+  dot 0, 0, 6

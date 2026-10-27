@@ -1,0 +1,9 @@
+paper night
+every frame
+  m = t * 2 / 3
+  repeat 24 as k
+    z = k + 1 - m % 1
+    c = [clay, coal][(k + floor(m)) % 2]
+    keep
+      spin z * 0.16
+      box 0, 0, 900 / z, 900 / z, mix(c, night, z / 24)

@@ -1,0 +1,9 @@
+paper sky
+every frame
+  keep
+    move 0, sin(t * 2) * 8 + 50
+    spin cos(t * 2) * 0.1
+    shape [(-90, 0), (-45, 0), (0, 66), (45, 0), (90, 0), (60, -36), (-60, -36)], chalk
+  repeat 4 as k
+    repeat 64
+      dot i * 8 - 256, sin(i / 6 + t * 2 + k) * 8 + 40 - k * 70, 5, sea

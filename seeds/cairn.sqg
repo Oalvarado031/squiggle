@@ -1,0 +1,13 @@
+paper bone
+box 0, -230, 512, 52, sand
+every frame
+  y = -204
+  repeat 7 as k
+    w = 100 - k * 11
+    h = 32 - k * 3
+    y += h
+    keep
+      move sin(t * 2 + k) * k * 1.5, y
+      grow 1, h / w
+      dot 0, 0, w, mix(coal, clay, k / 6)
+    y += h

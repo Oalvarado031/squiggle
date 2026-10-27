@@ -7,10 +7,216 @@ export interface Example {
 
 export const EXAMPLES: Example[] = [
   {
+    "slug": "abacus",
+    "title": "abacus",
+    "code": "box 0, 0, 480, 440, rust\nbox 0, 0, 444, 404, bone\nevery frame\n  repeat 8 as r\n    y = 168 - r * 48\n    line -222, y, 222, y, ash\n    d = 5 + sin(t * turn / 3 + r) * 5\n    repeat 10 as j\n      dot j * 30 - 200 + ease(clamp(j + 1 - d)) * 130, y, 15, [ember, ink][r % 2]\n"
+  },
+  {
+    "slug": "bloom",
+    "title": "bloom",
+    "code": "every frame\n  o = 0.75 + sin(t * turn / 3) * 0.25\n  repeat 4 as k\n    repeat 10 as i\n      keep\n        spin i * turn / 10 + k * 0.3 + t * 0.1\n        move 0, (110 - k * 24) * o\n        grow 0.38, 1\n        dot 0, 0, 110 - k * 24, mix(rose, ember, k / 3)\n  dot 0, 0, 30 * o, ochre\n"
+  },
+  {
+    "slug": "city-lights",
+    "title": "city lights",
+    "code": "paper night\ndot 150, 170, 30, bone\nevery frame\n  seed 5\n  repeat 12 as b\n    h = rand(80, 400)\n    box b * 40 - 220, h / 2 - 256, 36, h, coal\n    repeat h / 7 as j\n      box b * 40 - 230 + j % 3 * 10, floor(j / 3) * 20 - 236, 5, 9, fade(ochre, sin(t / 2 + rand(99)) * 2 - 1)\n"
+  },
+  {
+    "slug": "clockwork",
+    "title": "clockwork",
+    "code": "grow 1.3\nmake gear x, y, n, a\n  move x, y\n  spin a\n  dot 0, 0, n * 5\n  repeat n\n    spin turn / n\n    box n * 5, 0, 22, 15\n  dot 0, 0, n, ember\n  spin -a\nevery frame\n  a = t * turn / 12\n  gear -50, 0, 20, a\n  gear 138, 94, 12, 5 - a * 5 / 3\n  gear -47, -209, 8, 0.38 - a * 2.5\n"
+  },
+  {
+    "slug": "compass",
+    "title": "compass",
+    "code": "width 6\nring 0, 0, 206\nwidth 2\nrepeat 72 as i\n  line 0, 150 + min(i % 9, 1) * 28, 0, 194\n  spin turn / 72\nwrite \"N\", 0, 126, 34\nevery frame\n  spin sin(t * turn / 3) * 0.3\n  for c in [ember, ink]\n    shape [(0, 150), (-18, 0), (18, 0)], c\n    spin pi\n  dot 0, 0, 9, bone\n"
+  },
+  {
+    "slug": "coral",
+    "title": "coral",
+    "code": "paper sea\nmake arm p, a, n\n  q = p + polar(rand(35, 60), a + sin(t + n) / 9)\n  width n * 3 + 5\n  line p, q\n  if n > 0\n    for s in [1, -1]\n      arm q, a + s * rand(0.6), n - 1\nevery frame\n  repeat 5\n    color mix(rose, ochre, i / 4)\n    arm (i * 100 - 200, -256), rand(1, 2.1), 5\n"
+  },
+  {
+    "slug": "heartbeat",
+    "title": "heartbeat",
+    "code": "paper ink\nmake bump c, w\n  max(0, 1 - abs(u - c) / w)\nevery frame\n  width 4\n  last = (-240, 0)\n  repeat 121 as i\n    u = i % 40\n    p = (i * 4 - 240, bump(20, 1) * 150 - bump(22, 2) * 50 + bump(30, 4) * 30)\n    line last, p, fade(ember, 1 - (t * 40 - i) % 120 / 108)\n    last = p\n"
+  },
+  {
+    "slug": "honeycomb",
+    "title": "honeycomb",
+    "code": "paper bone\nevery frame\n  repeat 10 as r\n    repeat 11 as c\n      o = (c * 52 - 260 + r % 2 * 26, r * 45 - 202)\n      h = []\n      repeat 6 as k\n        h = h + [o + polar(27, k * turn / 6 + turn / 12)]\n      shape h, mix(sand, ochre, sin(dist(o, (0, 0)) / 60 - t * 2) + 0.5)\n"
+  },
+  {
+    "slug": "hourglass",
+    "title": "hourglass",
+    "code": "glass = [(0, 0), (-90, 180), (90, 180), (0, 0)]\nevery frame\n  f = clamp(t % 3 / 2)\n  spin ease(t % 3 - 2) * pi\n  repeat 2\n    spin pi\n    path glass\n    box 0, 190, 230, 20\n  color ochre\n  shape [(-90, -180), (90, -180), (0, f * 125 - 180)]\n  grow sqrt(1 - f) * 0.83\n  shape glass\n"
+  },
+  {
+    "slug": "jellyfish",
+    "title": "jellyfish",
+    "code": "paper night\nevery frame\n  s = sin(t * turn / 1.5)\n  move 0, 110 + s * 10\n  grow 1, 1 - s / 9\n  dot 0, 0, 110, fade(rose, 0.85)\n  box 0, -60, 240, 120, night\n  repeat 13 as k\n    repeat 36 as j\n      dot k * 18 - 108 + sin(j / 6 - t * 4 + k) * j / 2, j * -8, 2, fade(lilac, 0.6)\n"
+  },
+  {
+    "slug": "kaleidoscope",
+    "title": "kaleidoscope",
+    "code": "paper night\nevery frame\n  repeat 6\n    spin turn / 6\n    repeat 2\n      grow 1, -1\n      repeat 6 as i\n        p = polar(30 + i * 36, noise(i, t / 4) * 0.4 + 0.25)\n        shape [p, p + polar(60, t / 2 + i), p + polar(50, i * 2)], fade(hue(i * 50 + t * 30, 0.5), 0.5)\n"
+  },
+  {
+    "slug": "loom",
+    "title": "loom",
+    "code": "width 5\nrepeat 27\n  line i * 20 - 260, -256, i * 20 - 260, 240, ash\nevery frame\n  u = t / 1.5\n  box cos(u * pi) * 220, 0, 50, 12\n  grow 1, 0.4\n  repeat 17 as k\n    n = floor(u) - k\n    repeat 14\n      dot i * 40 - 260 + n % 2 * 20, (n - u) * 40, 17, mix(clay, ochre, n % 3 / 2)\n"
+  },
+  {
+    "slug": "mobile",
+    "title": "mobile",
+    "code": "line 0, 256, 0, 210\nmake hang p, w, n\n  e = cos(t / n + n) * w\n  for s in [-e, e]\n    q = p + (s, rand(-130, -70))\n    path [p, p + (s, 0), q]\n    dot q, 24 / n / n, pick([ember, ochre, sea, ink])\n    if n > 1\n      hang q, w * 0.6, n - 1\nevery frame\n  hang (0, 210), 120, 3\n"
+  },
+  {
+    "slug": "moth",
+    "title": "moth",
+    "code": "paper night\nevery frame\n  f = 0.8 + sin(t * 4) / 5\n  for s in [1, -1]\n    keep\n      grow s * f, 1\n      dot 90, -60, 80, clay\n      shape [(0, 40), (240, 100), (170, -50)], sand\n      dot 110, -90, 20, ember\n      line 6, 50, 50, 150, sand\n  width 26\n  line 0, 40, 0, -110, bone\n"
+  },
+  {
+    "slug": "murmuration",
+    "title": "murmuration",
+    "code": "repeat 8\n  box 0, 224 - i * 64, 512, 64, mix(rose, bone, i / 7)\nevery frame\n  repeat 800\n    k = i / 400\n    x = noise(k, t / 6) * 320 + rand(-30, 30) * rand\n    y = noise(k + 9, t / 6) * 220 + rand(-30, 30) * rand + 30\n    dot x, y, rand(1.2, 2.6), ink\n"
+  },
+  {
+    "slug": "nautilus",
+    "title": "nautilus",
+    "code": "paper bone\npts = []\nrepeat 241\n  a = i * turn / 70\n  pts = pts + [polar(5.6 * 3 ^ (a / turn), a)]\nshape pts, sand\nwidth 3\npath pts, ink\nwidth 2\nrepeat 26\n  a = i * 0.59 + turn\n  r = 5.6 * 3 ^ (a / turn)\n  path [polar(r / 3, a), polar(r / 1.7, a + 0.2), polar(r, a)], clay\n"
+  },
+  {
     "slug": "orbit-garden",
     "title": "orbit garden",
     "code": "paper ink\nevery frame\n  repeat 48 as i\n    a = i / 48 * turn + t * 0.3\n    dot cos(a) * 140, sin(a * 2) * 90, 3, hue(i * 7)\n"
+  },
+  {
+    "slug": "pinwheel",
+    "title": "pinwheel",
+    "code": "width 8\nline 0, 0, 20, -256, clay\nevery frame\n  spin -t * pi / 3\n  repeat 4\n    spin turn / 4\n    shape [(0, 0), (0, 170), (-120, 120)], [ember, ochre][i % 2]\n    shape [(0, 0), (-120, 120), (-60, 40)], [rust, clay][i % 2]\n  dot 0, 0, 10, ink\n"
+  },
+  {
+    "slug": "pond",
+    "title": "pond",
+    "code": "paper sea\ndot -150, 150, 60, moss\nat = (0, 0)\nfrom = 0\nwhen click\n  at = mouse\n  from = t\nevery frame\n  d = (t - from) % 3\n  repeat 3\n    ring at, d * 120 / (i + 1), fade(chalk, 1 - d / 3)\n  repeat 20\n    dot polar(140, t / 2 + i % 2 * pi - i / 17), 22 - i, [ember, chalk][i % 2]\n"
+  },
+  {
+    "slug": "rain-on-a-window",
+    "title": "rain on a window",
+    "code": "paper night\nrepeat 140\n  r = rand(1, 5) ^ 2.4\n  dot rand(-256, 256), rand(-256, 256), r, fade(sand, 2 / r)\nevery frame\n  repeat 16\n    x = rand(-240, 240)\n    y = 290 - (t * 50 + i * 37 - sin(t * turn + i) * 8) % 660\n    line x, y, x, y + 60, fade(bone, 0.2)\n    dot x, y, 6, bone\n"
+  },
+  {
+    "slug": "sand",
+    "title": "sand",
+    "code": "paper bone\ndot 110, 140, 44, ember\nevery frame\n  repeat 5 as k\n    pts = [(-256, -256)]\n    repeat 33 as i\n      x = i * 16 - 256\n      pts = pts + [(x, 70 - k * 60 - abs(noise(x / 220 + k * 4 - t / 12, k)) * 120)]\n    shape pts + [(256, -256)], mix(sand, clay, k / 4)\n"
+  },
+  {
+    "slug": "seed-head",
+    "title": "seed head",
+    "code": "blow = 0\nwhen click\n  blow = t\nbox 0, -128, 4, 256, moss\nwidth 1\nevery frame\n  repeat 90\n    d = max(0, (t - blow) % 6 - i / 30)\n    p = polar(120, i * 2.4) + (d * 70, d * 40 + sin(d + i) * 20)\n    line p - polar(110 / (1 + d * 9), i * 2.4), p, ash\n    dot p, 9, fade(ash, 0.25)\n"
+  },
+  {
+    "slug": "signal",
+    "title": "signal",
+    "code": "move 0, 40\nwidth 4\npath [(-70, -270), (0, 0), (70, -270)]\nzig = [(0, 0)]\nrepeat 8 as i\n  zig = zig + [((i % 2 - 0.5) * i * 18, -i * 34)]\npath zig\ndot 0, 0, 12, ember\nevery frame\n  width 5\n  repeat 5 as k\n    r = (t / 3 + k / 5) % 1\n    ring 0, 0, r * 230 + 24, fade(ink, 1 - r)\n"
+  },
+  {
+    "slug": "snowfall",
+    "title": "snowfall",
+    "code": "paper night\ndot -140, -560, 360, bone\ndot 220, -600, 400, chalk\nevery frame\n  repeat 200\n    s = rand(1, 4)\n    y = 270 - (t * s * 20 + rand(540)) % 540\n    dot rand(-256, 256) + sin(t + y / 50) * 10, y, s, fade(chalk, s / 4)\n"
+  },
+  {
+    "slug": "spider-web",
+    "title": "spider web",
+    "code": "paper night\ncolor bone\nwidth 1\nrepeat 16\n  line 0, 0, polar(330, i * turn / 16)\npts = []\nrepeat 190\n  pts = pts + [polar(16 + i * 1.25 + noise(i / 7) * 8, i * turn / 16)]\npath pts\nseed 3\nrepeat 50\n  dot polar(rand(20, 250), floor(rand(16)) * turn / 16), rand(1, 4), sky\n"
+  },
+  {
+    "slug": "tide",
+    "title": "tide",
+    "code": "dot 0, 100, 60, ember\nevery frame\n  p = t * turn / 3\n  repeat 6 as k\n    pts = [(-256, -256)]\n    repeat 33 as i\n      y = sin(i / (2.5 + k) - p + k) * (5 + k * 3) + sin(p) * 10 + 60 - k * 44\n      pts = pts + [(i * 16 - 256, y)]\n    shape pts + [(256, -256)], fade(sea, 0.32)\n"
+  },
+  {
+    "slug": "tides-of-dots",
+    "title": "tides of dots",
+    "code": "every frame\n  p = t * turn / 3\n  repeat 20 as j\n    repeat 26 as i\n      x = i * 20 - 250\n      w = sin(x / 50 - p + j / 2)\n      dot x, j * 24 - 228 + w * 10, 9 - j / 3 + w * 2, mix(sea, sky, j / 19)\n"
+  },
+  {
+    "slug": "tree-rings",
+    "title": "tree rings",
+    "code": "paper bone\ndot 0, 0, 205, sand\nr = 6\nrepeat 30 as k\n  r += rand(4, 9)\n  pts = []\n  repeat 73 as i\n    a = i * turn / 72\n    pts = pts + [polar(r + noise(cos(a) * 2, sin(a) * 2, k / 8) * r / 6, a)]\n  width rand(1, 3)\n  path pts, mix(clay, rust, rand)\nwidth 16\npath pts, coal\n"
+  },
+  {
+    "slug": "tunnel",
+    "title": "tunnel",
+    "code": "paper night\nevery frame\n  m = t * 2 / 3\n  repeat 24 as k\n    z = k + 1 - m % 1\n    c = [clay, coal][(k + floor(m)) % 2]\n    keep\n      spin z * 0.16\n      box 0, 0, 900 / z, 900 / z, mix(c, night, z / 24)\n"
+  },
+  {
+    "slug": "wheat",
+    "title": "wheat",
+    "code": "every frame\n  repeat 9 as k\n    x = k * 52 - 208\n    w = noise(k / 2, t / 3) * 50\n    line x, -256, x + w, 80, ochre\n    repeat 16 as j\n      s = j % 2 - 0.5\n      p = (x + w * (1 + j / 40) + s * 14, 80 + j * 9)\n      dot p, 6, ochre\n      line p, p + (s * 20 + w / 4, 40), sand\n"
   }
 ];
 
-export const SEEDS: Example[] = [];
+export const SEEDS: Example[] = [
+  {
+    "slug": "cairn",
+    "title": "cairn",
+    "code": "paper bone\nbox 0, -230, 512, 52, sand\nevery frame\n  y = -204\n  repeat 7 as k\n    w = 100 - k * 11\n    h = 32 - k * 3\n    y += h\n    keep\n      move sin(t * 2 + k) * k * 1.5, y\n      grow 1, h / w\n      dot 0, 0, w, mix(coal, clay, k / 6)\n    y += h\n"
+  },
+  {
+    "slug": "constellation",
+    "title": "constellation",
+    "code": "paper night\nrepeat 160\n  dot rand(-256, 256), rand(-256, 256), rand(1.5), ash\nstars = [(-160, 120), (-70, 150), (0, 90), (50, -20), (170, 0)]\nwhen click\n  stars = stars + [mouse]\nevery frame\n  path stars, fade(sky, 0.4)\n  for p in stars\n    dot p, 5 + sin(t * 3 + p.x) * 1.5, bone\n"
+  },
+  {
+    "slug": "dominoes",
+    "title": "dominoes",
+    "code": "line -256, -120, 256, -120\nevery frame\n  w = 11 * (0.5 - cos(t * turn / 3) / 2)\n  repeat 10 as i\n    keep\n      move i * 46 - 184, -120\n      spin -clamp(w - i) * 0.42\n      box -15, 100, 30, 200, [ember, ink][min(i, 1)]\n      dot -15, 150, 5, chalk\n      dot -15, 50, 5, chalk\n"
+  },
+  {
+    "slug": "falling-leaves",
+    "title": "falling leaves",
+    "code": "paper bone\nevery frame\n  repeat 22\n    s = rand(0.8, 1.5)\n    keep\n      move rand(-240, 240) + sin(t + i) * 30, 300 - (t * 30 * s + i * 97) % 600\n      spin t * s + i\n      grow s\n      shape [(0, 26), (12, 6), (8, -12), (0, -20), (-8, -12), (-12, 6)], pick([rust, ochre, clay])\n"
+  },
+  {
+    "slug": "fern",
+    "title": "fern",
+    "code": "paper bone\nmake frond p, a, s\n  q = p + polar(s, a)\n  width s / 8\n  line p, q, moss\n  if s > 3\n    frond q, a + 1, s * 0.38\n    frond q, a - 1, s * 0.38\n    frond q, a + 0.07, s * 0.85\nfrond (-30, -250), 1.45, 66\n"
+  },
+  {
+    "slug": "fish-scales",
+    "title": "fish scales",
+    "code": "every frame\n  repeat 23 as r\n    repeat 11 as c\n      x = c * 50 - 250 + r % 2 * 25\n      y = 280 - r * 25\n      w = sin(x / 90 + y / 60 - t * turn / 3)\n      repeat 4 as k\n        dot x, y, 28 - k * 7, [mix(rust, ochre, w), chalk][k % 2]\n"
+  },
+  {
+    "slug": "hello-wall",
+    "title": "hello wall",
+    "code": "paper ink\nwrite \"hello, wall\", 0, 40, 64, bone\nevery frame\n  pts = []\n  repeat 61\n    pts = pts + [(i * 6 - 180, sin(i / 4 - t * turn / 1.5) * 12 * sin(i / 19) - 50)]\n  width 6\n  path pts, ember\n"
+  },
+  {
+    "slug": "inkblot",
+    "title": "inkblot",
+    "code": "paper bone\nn = 1\nwhen key \"space\"\n  n += 1\nevery frame\n  for s in [1, -1]\n    repeat 300\n      x = i % 12 * 12\n      y = floor(i / 12) * 12 - 144\n      r = noise(x / 50 + n * 9, y / 50, t / 4) * 30 - x / 10 + 8\n      dot s * x, y, max(0, r), ink\n"
+  },
+  {
+    "slug": "lace",
+    "title": "lace",
+    "code": "paper plum\ncolor bone\nwidth 2\nevery frame\n  spin t / 20\n  repeat 4 as k\n    n = 8 + k * 8\n    repeat n\n      spin turn / n\n      keep\n        move 0, 40 + k * 56\n        grow 0.45, 1\n        ring 0, 0, 27\n      dot 0, 76 + k * 56, 3.5\n  ring 0, 0, 16\n  dot 0, 0, 6\n"
+  },
+  {
+    "slug": "paper-boat",
+    "title": "paper boat",
+    "code": "paper sky\nevery frame\n  keep\n    move 0, sin(t * 2) * 8 + 50\n    spin cos(t * 2) * 0.1\n    shape [(-90, 0), (-45, 0), (0, 66), (45, 0), (90, 0), (60, -36), (-60, -36)], chalk\n  repeat 4 as k\n    repeat 64\n      dot i * 8 - 256, sin(i / 6 + t * 2 + k) * 8 + 40 - k * 70, 5, sea\n"
+  },
+  {
+    "slug": "terrazzo",
+    "title": "terrazzo",
+    "code": "n = 9\nwhen click\n  n += 1\nevery frame\n  seed n\n  repeat 150\n    c = (rand(-280, 280), rand(-280, 280))\n    r = rand(4, 22)\n    pts = []\n    repeat 5 as k\n      pts = pts + [c + polar(r * rand(0.6, 1), k * turn / 5)]\n    shape pts, pick([ember, ochre, sea, coal, clay, rose, ash])\n"
+  },
+  {
+    "slug": "trefoil",
+    "title": "trefoil",
+    "code": "paper night\nevery frame\n  spin t * turn / 9\n  repeat 150\n    u = i / 150 * turn\n    z = -sin(3 * u)\n    dot (sin(u) + 2 * sin(2 * u)) * 62, (cos(u) - 2 * cos(2 * u)) * 62, 7 + z * 2, mix(plum, ember, z / 2 + 0.5)\n"
+  }
+];

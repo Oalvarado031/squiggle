@@ -32,15 +32,22 @@ export function rotationTheme(ms: number): string {
   return THEMES[((k % THEMES.length) + THEMES.length) % THEMES.length];
 }
 
+// Every page shows the theme, so remember the answer for a minute per isolate.
+const themeCache = new Map<string, { theme: string; until: number }>();
+
 export async function themeFor(env: Env, ms: number): Promise<string> {
   const week = weekId(ms);
+  const hit = themeCache.get(week);
+  if (hit && hit.until > Date.now()) return hit.theme;
+  let theme = rotationTheme(ms);
   try {
     const row = await env.DB.prepare('SELECT theme FROM prompts WHERE week = ?').bind(week).first<{ theme: string }>();
-    if (row?.theme) return row.theme;
+    if (row?.theme) theme = row.theme;
   } catch {
     // the rotation is the fallback
   }
-  return rotationTheme(ms);
+  themeCache.set(week, { theme, until: Date.now() + 60_000 });
+  return theme;
 }
 
 /** Freezes the top three of a finished week. Safe to call more than once. */

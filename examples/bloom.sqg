@@ -1,0 +1,10 @@
+every frame
+  o = 0.75 + sin(t * turn / 3) * 0.25
+  repeat 4 as k
+    repeat 10 as i
+      keep
+        spin i * turn / 10 + k * 0.3 + t * 0.1
+        move 0, (110 - k * 24) * o
+        grow 0.38, 1
+        dot 0, 0, 110 - k * 24, mix(rose, ember, k / 3)
+  dot 0, 0, 30 * o, ochre

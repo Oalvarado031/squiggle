@@ -1,5 +1,181 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`determinism > abacus: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "35fda6a0671b83b9",
+    "e833115e02c4e7fd",
+    "6855467cdd230d33",
+  ],
+  "slug": "abacus",
+}
+`;
+
+exports[`determinism > bloom: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "ab8d6ae4319594ea",
+    "1b8e4d2e2fa3eb89",
+    "a56ca858bc56e5fc",
+  ],
+  "slug": "bloom",
+}
+`;
+
+exports[`determinism > city-lights: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "793a98dd731ca2e0",
+    "690c595e0f84f3d9",
+    "35210b390ec3369d",
+  ],
+  "slug": "city-lights",
+}
+`;
+
+exports[`determinism > clockwork: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "18984469bd11b8f3",
+    "ed3b49f80b3a8947",
+    "e7f9ef69b2ae5344",
+  ],
+  "slug": "clockwork",
+}
+`;
+
+exports[`determinism > compass: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "bf86523b0101a55c",
+    "72cad41c40df2c5a",
+    "a2fd304daa6267fd",
+  ],
+  "slug": "compass",
+}
+`;
+
+exports[`determinism > coral: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "44bcd01315d8bf85",
+    "b2f9ba330279791e",
+    "3259eee129ece105",
+  ],
+  "slug": "coral",
+}
+`;
+
+exports[`determinism > heartbeat: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "3fce405c48dc07dc",
+    "65dcd54754371c0c",
+    "b2270c4d1bbb9995",
+  ],
+  "slug": "heartbeat",
+}
+`;
+
+exports[`determinism > honeycomb: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "11064e650afd0cb3",
+    "6bb12b122272668e",
+    "81c26030dc0d4bef",
+  ],
+  "slug": "honeycomb",
+}
+`;
+
+exports[`determinism > hourglass: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "edcc2c1da4c8d9f4",
+    "fe61fa28e56945b1",
+    "8af2ca25549e3f1b",
+  ],
+  "slug": "hourglass",
+}
+`;
+
+exports[`determinism > jellyfish: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "a28398697c4ffa57",
+    "153effe9a88b0cf7",
+    "f02d597d36e4b3d5",
+  ],
+  "slug": "jellyfish",
+}
+`;
+
+exports[`determinism > kaleidoscope: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "06b943dcc0ef2ab6",
+    "6bd5d6d8bae9760f",
+    "5af3580ec381a328",
+  ],
+  "slug": "kaleidoscope",
+}
+`;
+
+exports[`determinism > loom: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9631991b4c9b2e19",
+    "4aed548f90f346c5",
+    "0dfbecc6e1f8e482",
+  ],
+  "slug": "loom",
+}
+`;
+
+exports[`determinism > mobile: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "220da3118dfff93e",
+    "86a036f3ee0dc27e",
+    "7fc735a38f774f66",
+  ],
+  "slug": "mobile",
+}
+`;
+
+exports[`determinism > moth: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "01ef39e586a1db16",
+    "2e4e9ff0f09f66f9",
+    "d51f18b8e3014903",
+  ],
+  "slug": "moth",
+}
+`;
+
+exports[`determinism > murmuration: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "ab35eea4f1aebae6",
+    "4c357dd73f2ea0a0",
+    "515c66863d0e6495",
+  ],
+  "slug": "murmuration",
+}
+`;
+
+exports[`determinism > nautilus: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "d9ea7bba6b1187c1",
+    "d9ea7bba6b1187c1",
+    "d9ea7bba6b1187c1",
+  ],
+  "slug": "nautilus",
+}
+`;
+
 exports[`determinism > orbit-garden: frame hashes at t = 0, 1, 2 1`] = `
 {
   "hashes": [
@@ -8,5 +184,280 @@ exports[`determinism > orbit-garden: frame hashes at t = 0, 1, 2 1`] = `
     "03f400cb9b9dfcfc",
   ],
   "slug": "orbit-garden",
+}
+`;
+
+exports[`determinism > pinwheel: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "a0fcec6853ce25b8",
+    "bbf3a8fc51c69963",
+    "7c5279283cb1c1e7",
+  ],
+  "slug": "pinwheel",
+}
+`;
+
+exports[`determinism > pond: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "30ae2bb489750190",
+    "d0182beae2dd1c76",
+    "cf8bc44648ce20f5",
+  ],
+  "slug": "pond",
+}
+`;
+
+exports[`determinism > rain-on-a-window: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9ccdb6f3b8b6617d",
+    "5f783b23bf4d9726",
+    "09c76facffab264f",
+  ],
+  "slug": "rain-on-a-window",
+}
+`;
+
+exports[`determinism > sand: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "d2d9f441a736db94",
+    "830d0e6d27801cbc",
+    "c38bb18277187ca0",
+  ],
+  "slug": "sand",
+}
+`;
+
+exports[`determinism > seed/cairn: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "f62f05b7c62bfe1f",
+    "ef1c5fb186356a93",
+    "1df714d63f855665",
+  ],
+  "slug": "seed/cairn",
+}
+`;
+
+exports[`determinism > seed/constellation: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "a05cd9edf376fd5e",
+    "63180fb87049e350",
+    "a51602a12b9f3c8c",
+  ],
+  "slug": "seed/constellation",
+}
+`;
+
+exports[`determinism > seed/dominoes: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "a866052ca220554c",
+    "a687895128ef9232",
+    "a687895128ef9232",
+  ],
+  "slug": "seed/dominoes",
+}
+`;
+
+exports[`determinism > seed/falling-leaves: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9c9876b46480594d",
+    "ce960e199071a380",
+    "5983d9a7fd639f51",
+  ],
+  "slug": "seed/falling-leaves",
+}
+`;
+
+exports[`determinism > seed/fern: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "606dbebf767cf27c",
+    "606dbebf767cf27c",
+    "606dbebf767cf27c",
+  ],
+  "slug": "seed/fern",
+}
+`;
+
+exports[`determinism > seed/fish-scales: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "e8e047b4519c2c7e",
+    "fb4c30b09d249d93",
+    "9024281fb231e8f2",
+  ],
+  "slug": "seed/fish-scales",
+}
+`;
+
+exports[`determinism > seed/hello-wall: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "8fcdecec388f8e88",
+    "b950b0d62415787f",
+    "1f276ef86219a57a",
+  ],
+  "slug": "seed/hello-wall",
+}
+`;
+
+exports[`determinism > seed/inkblot: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "dccf031f6bdec8e2",
+    "0ae4783af9bccf28",
+    "0d17e07ff68707cc",
+  ],
+  "slug": "seed/inkblot",
+}
+`;
+
+exports[`determinism > seed/lace: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "6ec457ba343fc660",
+    "16d0f1941714803a",
+    "e718e721a2a6ac41",
+  ],
+  "slug": "seed/lace",
+}
+`;
+
+exports[`determinism > seed/paper-boat: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "6a01043e34ed6e07",
+    "d467e5fa13795a2d",
+    "420d4838af928f32",
+  ],
+  "slug": "seed/paper-boat",
+}
+`;
+
+exports[`determinism > seed/terrazzo: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "46c2fd9c95ac16d9",
+    "46c2fd9c95ac16d9",
+    "46c2fd9c95ac16d9",
+  ],
+  "slug": "seed/terrazzo",
+}
+`;
+
+exports[`determinism > seed/trefoil: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "bf1054084954003c",
+    "89f056847c6c7654",
+    "0ccfef4e1d1c1434",
+  ],
+  "slug": "seed/trefoil",
+}
+`;
+
+exports[`determinism > seed-head: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "6543b188769a2070",
+    "22304a4c09320ed6",
+    "81b3c4018a20ae95",
+  ],
+  "slug": "seed-head",
+}
+`;
+
+exports[`determinism > signal: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9a4d051f4ca2f6f7",
+    "5f1ea3f7f84c3005",
+    "033a601c24b83270",
+  ],
+  "slug": "signal",
+}
+`;
+
+exports[`determinism > snowfall: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "af5e723cce71debd",
+    "6af17f242889fc60",
+    "195beb91b6e45def",
+  ],
+  "slug": "snowfall",
+}
+`;
+
+exports[`determinism > spider-web: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "0f95ac58040d8644",
+    "0f95ac58040d8644",
+    "0f95ac58040d8644",
+  ],
+  "slug": "spider-web",
+}
+`;
+
+exports[`determinism > tide: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "4a0f4ecedb36330a",
+    "bfb9440ad53e263d",
+    "0c90b39024331ab8",
+  ],
+  "slug": "tide",
+}
+`;
+
+exports[`determinism > tides-of-dots: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "807622acce14ae33",
+    "7e9a7825fcb20c29",
+    "490bed0f6f1ba347",
+  ],
+  "slug": "tides-of-dots",
+}
+`;
+
+exports[`determinism > tree-rings: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "833838a6b400ab26",
+    "833838a6b400ab26",
+    "833838a6b400ab26",
+  ],
+  "slug": "tree-rings",
+}
+`;
+
+exports[`determinism > tunnel: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9ec63a796ca77502",
+    "45758afcdfc01ef2",
+    "6949d86aa10e4a79",
+  ],
+  "slug": "tunnel",
+}
+`;
+
+exports[`determinism > wheat: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "4ede2f0c4105ed88",
+    "75ffa2c5593ff740",
+    "04e76e3040b32fa9",
+  ],
+  "slug": "wheat",
 }
 `;

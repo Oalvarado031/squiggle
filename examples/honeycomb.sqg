@@ -1,0 +1,9 @@
+paper bone
+every frame
+  repeat 10 as r
+    repeat 11 as c
+      o = (c * 52 - 260 + r % 2 * 26, r * 45 - 202)
+      h = []
+      repeat 6 as k
+        h = h + [o + polar(27, k * turn / 6 + turn / 12)]
+      shape h, mix(sand, ochre, sin(dist(o, (0, 0)) / 60 - t * 2) + 0.5)
