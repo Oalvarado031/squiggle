@@ -1,0 +1,56 @@
+.wall-head {
+  padding: clamp(36px, 6vw, 72px) 0 18px;
+  max-width: 760px;
+}
+.wall-head .lede {
+  font-size: 20px;
+  color: var(--ink-2);
+}
+.prompt-link {
+  font-size: 15px;
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+.tabs a {
+  text-decoration: none;
+  padding: 10px 14px;
+  margin-bottom: -1px;
+  border-bottom: 2.5px solid transparent;
+  color: var(--ink-2);
+  font-size: 16.5px;
+}
+.tabs a[aria-current='page'] {
+  color: var(--ink);
+  border-bottom-color: var(--ember);
+}
+.more-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+.wall-note {
+  color: var(--ink-2);
+  margin: -12px 0 24px;
+}
+@media (max-width: 480px) {
+  .wall .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+  .wall .card-title {
+    font-size: 15.5px;
+  }
+  .wall .card-meta {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tabs a {
+    padding: 9px 9px;
+    font-size: 15px;
+  }
+}

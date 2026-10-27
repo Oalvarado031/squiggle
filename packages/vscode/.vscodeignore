@@ -1,0 +1,9 @@
+# Only the extension itself ships: package.json, extension.js, the grammar, language
+# configuration, snippets, icons, README, CHANGELOG and LICENSE.
+scripts/**
+node_modules/**
+**/*.vsix
+**/*.map
+**/*.ts
+**/.DS_Store
+.gitignore

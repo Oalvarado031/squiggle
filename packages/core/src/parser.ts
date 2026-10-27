@@ -93,7 +93,8 @@ class Parser {
     this.fns = fns;
   }
 
-  private get tok(): Token {
+  /** the current token (a method, not a getter, so TypeScript doesn't narrow it across next()) */
+  private cur(): Token {
     return this.toks[this.i];
   }
   private peek(n = 1): Token {
@@ -102,10 +103,10 @@ class Parser {
   private next(): Token {
     return this.toks[this.i++];
   }
-  private isOp(text: string, tok = this.tok): boolean {
+  private isOp(text: string, tok = this.cur()): boolean {
     return tok.type === 'op' && tok.text === text;
   }
-  private isWord(text: string, tok = this.tok): boolean {
+  private isWord(text: string, tok = this.cur()): boolean {
     return tok.type === 'name' && tok.text === text;
   }
   private fail(tok: Token, message: string, hint?: string, len?: number): never {
@@ -129,12 +130,12 @@ class Parser {
   }
 
   private expectOp(text: string, hint?: string): Token {
-    if (!this.isOp(text)) this.fail(this.tok, `expected "${text}" but found ${this.describe(this.tok)}`, hint);
+    if (!this.isOp(text)) this.fail(this.cur(), `expected "${text}" but found ${this.describe(this.cur())}`, hint);
     return this.next();
   }
 
   private endOfLine(what: string): void {
-    const tok = this.tok;
+    const tok = this.cur();
     if (tok.type === 'newline') {
       this.next();
       return;
@@ -146,8 +147,8 @@ class Parser {
 
   program(): Stmt[] {
     const out: Stmt[] = [];
-    while (this.tok.type !== 'eof') {
-      if (this.tok.type === 'newline') {
+    while (this.cur().type !== 'eof') {
+      if (this.cur().type === 'newline') {
         this.next();
         continue;
       }
@@ -157,33 +158,33 @@ class Parser {
   }
 
   private block(header: Token, what: string): Stmt[] {
-    if (this.tok.type !== 'newline') {
-      if (this.tok.type === 'eof') {
+    if (this.cur().type !== 'newline') {
+      if (this.cur().type === 'eof') {
         this.fail(header, `${what} needs lines under it`, `put the lines it should run on the next lines, indented by two spaces`);
       }
-      this.fail(this.tok, `didn't expect ${this.describe(this.tok)} after ${what}`, `end the line after ${what} and indent the lines it runs`);
+      this.fail(this.cur(), `didn't expect ${this.describe(this.cur())} after ${what}`, `end the line after ${what} and indent the lines it runs`);
     }
     this.next();
-    if (this.tok.type !== 'indent') {
+    if (this.cur().type !== 'indent') {
       this.fail(header, `${what} needs lines under it, indented`, `indent the lines that belong to ${what} by two spaces`, header.text.length);
     }
     this.next();
     this.depth++;
     const body: Stmt[] = [];
-    while (this.tok.type !== 'dedent' && this.tok.type !== 'eof') {
-      if (this.tok.type === 'newline') {
+    while (this.cur().type !== 'dedent' && this.cur().type !== 'eof') {
+      if (this.cur().type === 'newline') {
         this.next();
         continue;
       }
       body.push(this.statement());
     }
-    if (this.tok.type === 'dedent') this.next();
+    if (this.cur().type === 'dedent') this.next();
     this.depth--;
     return body;
   }
 
   private statement(): Stmt {
-    const tok = this.tok;
+    const tok = this.cur();
     if (tok.type === 'indent') {
       this.fail(tok, "this line is indented, but the line above doesn't start a block", 'remove the indent, or start a block above it with repeat, if, keep, every frame…', 2);
     }
@@ -254,7 +255,7 @@ class Parser {
 
   private args(): Expr[] {
     const nameTok = this.toks[this.i - 1];
-    if (this.isOp('(') && !this.tok.space && this.parenIsWholeLine(this.i)) {
+    if (this.isOp('(') && !this.cur().space && this.parenIsWholeLine(this.i)) {
       // dot(1, 2, 3) works too.
       this.next();
       const out: Expr[] = [];
@@ -269,12 +270,12 @@ class Parser {
       return out;
     }
     const out: Expr[] = [];
-    if (this.tok.type === 'newline' || this.tok.type === 'eof' || this.tok.type === 'dedent') return out;
+    if (this.cur().type === 'newline' || this.cur().type === 'eof' || this.cur().type === 'dedent') return out;
     out.push(this.expr());
     while (this.isOp(',')) {
       this.next();
-      if (this.tok.type === 'newline' || this.tok.type === 'eof') {
-        this.fail(this.tok, `there's a comma after the last value of ${nameTok.text}`, 'remove the trailing comma, or add the missing value');
+      if (this.cur().type === 'newline' || this.cur().type === 'eof') {
+        this.fail(this.cur(), `there's a comma after the last value of ${nameTok.text}`, 'remove the trailing comma, or add the missing value');
       }
       out.push(this.expr());
     }
@@ -313,8 +314,8 @@ class Parser {
     const name = this.checkName(nameTok, 'storing a value');
     if (this.fns.has(name)) this.fail(nameTok, `${name} is a command you made, so it can't also hold a value`, 'pick another name for the value');
     const opTok = this.next();
-    if (this.tok.type === 'newline' || this.tok.type === 'eof') {
-      this.fail(this.tok, `${name} ${opTok.text} needs a value after it`, `for example: ${name} ${opTok.text} 10`);
+    if (this.cur().type === 'newline' || this.cur().type === 'eof') {
+      this.fail(this.cur(), `${name} ${opTok.text} needs a value after it`, `for example: ${name} ${opTok.text} 10`);
     }
     const value = this.expr();
     const pos = posOf(nameTok);
@@ -324,7 +325,7 @@ class Parser {
 
   private every(): Stmt {
     const kw = this.next();
-    if (!this.isWord('frame')) this.fail(this.tok, 'every is always followed by frame', 'write every frame');
+    if (!this.isWord('frame')) this.fail(this.cur(), 'every is always followed by frame', 'write every frame');
     const frameTok = this.next();
     if (this.depth > 0) this.fail(kw, 'every frame goes at the top level, not inside another block', 'move it all the way to the left', 11);
     this.inEvery = true;
@@ -335,7 +336,7 @@ class Parser {
 
   private repeat(): Stmt {
     const kw = this.next();
-    if (this.tok.type === 'newline' || this.tok.type === 'eof') this.fail(kw, 'repeat needs to know how many times', 'for example: repeat 12 as i', 6);
+    if (this.cur().type === 'newline' || this.cur().type === 'eof') this.fail(kw, 'repeat needs to know how many times', 'for example: repeat 12 as i', 6);
     const count = this.expr();
     let as: string | undefined;
     if (this.isWord('as')) {
@@ -349,7 +350,7 @@ class Parser {
   private forStmt(): Stmt {
     const kw = this.next();
     const as = this.checkName(this.next(), 'for');
-    if (!this.isWord('in')) this.fail(this.tok, 'for needs "in" and a list', `for example: for ${as} in [1, 2, 3]`);
+    if (!this.isWord('in')) this.fail(this.cur(), 'for needs "in" and a list', `for example: for ${as} in [1, 2, 3]`);
     this.next();
     const list = this.expr();
     const body = this.block(kw, 'for');
@@ -358,9 +359,9 @@ class Parser {
 
   private ifStmt(): Stmt {
     const kw = this.next();
-    if (this.tok.type === 'newline' || this.tok.type === 'eof') this.fail(kw, 'if needs a test', 'for example: if i % 2 == 0', 2);
+    if (this.cur().type === 'newline' || this.cur().type === 'eof') this.fail(kw, 'if needs a test', 'for example: if i % 2 == 0', 2);
     const cond = this.expr();
-    if (this.isOp('=')) this.fail(this.tok, 'a single = stores a value', 'use == to check whether two things are equal');
+    if (this.isOp('=')) this.fail(this.cur(), 'a single = stores a value', 'use == to check whether two things are equal');
     const body = this.block(kw, 'if');
     let elseBody: Stmt[] | undefined;
     if (this.isWord('else')) {
@@ -385,7 +386,7 @@ class Parser {
     } else if (this.isWord('key')) {
       on = 'key';
       this.next();
-      const k = this.tok;
+      const k = this.cur();
       if (k.type !== 'str') this.fail(k, 'when key needs the key in quotes', 'for example: when key "space"');
       this.next();
       key = String(k.value).toLowerCase();
@@ -396,7 +397,7 @@ class Parser {
         this.fail(k, `I don't know the key "${k.value}"`, guess ? `try "${guess}"` : 'keys are "space", "enter", "left", "right", "up", "down", letters and digits');
       }
     } else {
-      this.fail(this.tok, 'when is followed by key or click', 'for example: when key "space" or when click');
+      this.fail(this.cur(), 'when is followed by key or click', 'for example: when key "space" or when click');
     }
     this.inWhen = true;
     const body = this.block(kw, `when ${on}`);
@@ -410,7 +411,7 @@ class Parser {
     const nameTok = this.next();
     const name = this.checkName(nameTok, 'make');
     const params: string[] = [];
-    if (this.tok.type === 'name') {
+    if (this.cur().type === 'name') {
       params.push(this.checkName(this.next(), 'make'));
       while (this.isOp(',')) {
         this.next();
@@ -420,7 +421,7 @@ class Parser {
         params.push(p);
       }
     } else if (this.isOp('(')) {
-      this.fail(this.tok, 'make lists its inputs without brackets', `for example: make ${name} a, b`);
+      this.fail(this.cur(), 'make lists its inputs without brackets', `for example: make ${name} a, b`);
     }
     this.inMake = true;
     const body = this.block(kw, `make ${name}`);
@@ -471,11 +472,11 @@ class Parser {
 
   private compare(): Expr {
     const a = this.sum();
-    const tok = this.tok;
+    const tok = this.cur();
     if (tok.type === 'op' && ['==', '!=', '<', '>', '<=', '>='].includes(tok.text)) {
       this.next();
       const b = this.sum();
-      const t2 = this.tok;
+      const t2 = this.cur();
       if (t2.type === 'op' && ['==', '!=', '<', '>', '<=', '>='].includes(t2.text)) {
         this.fail(t2, 'compare two things at a time', 'join two tests with and, like a < b and b < c');
       }
@@ -486,7 +487,7 @@ class Parser {
 
   private sum(): Expr {
     let a = this.product();
-    while (this.tok.type === 'op' && (this.tok.text === '+' || this.tok.text === '-')) {
+    while (this.cur().type === 'op' && (this.cur().text === '+' || this.cur().text === '-')) {
       const op = this.next().text;
       const b = this.product();
       a = { t: 'bin', op, a, b, pos: span(a.pos, b.pos) };
@@ -496,7 +497,7 @@ class Parser {
 
   private product(): Expr {
     let a = this.unary();
-    while (this.tok.type === 'op' && (this.tok.text === '*' || this.tok.text === '/' || this.tok.text === '%')) {
+    while (this.cur().type === 'op' && (this.cur().text === '*' || this.cur().text === '/' || this.cur().text === '%')) {
       const op = this.next().text;
       const b = this.unary();
       a = { t: 'bin', op, a, b, pos: span(a.pos, b.pos) };
@@ -552,7 +553,7 @@ class Parser {
       }
       if (this.isOp('.')) {
         this.next();
-        const nameTok = this.tok;
+        const nameTok = this.cur();
         if (nameTok.type !== 'name') this.fail(nameTok, 'a dot is followed by a name, like p.x', 'points have .x and .y');
         this.next();
         e = { t: 'member', obj: e, name: nameTok.text, pos: span(e.pos, posOf(nameTok)) };
@@ -564,7 +565,7 @@ class Parser {
   }
 
   private primary(): Expr {
-    const tok = this.tok;
+    const tok = this.cur();
     switch (tok.type) {
       case 'num':
         this.next();
@@ -593,7 +594,7 @@ class Parser {
           if (this.isOp(',')) {
             this.next();
             const b = this.expr();
-            if (this.isOp(',')) this.fail(this.tok, 'points have two values: (x, y)', 'use a list for more values: [a, b, c]');
+            if (this.isOp(',')) this.fail(this.cur(), 'points have two values: (x, y)', 'use a list for more values: [a, b, c]');
             const close = this.expectOp(')');
             return { t: 'point', x: a, y: b, pos: span(posOf(tok), posOf(close)) };
           }

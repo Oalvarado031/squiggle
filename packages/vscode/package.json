@@ -1,0 +1,127 @@
+{
+  "name": "squiggle-vscode",
+  "displayName": "Squiggle",
+  "description": "Squiggle (.sqg) for VS Code: highlighting, snippets, a post-length counter and one-click Open in Squiggle Studio.",
+  "version": "0.1.0",
+  "publisher": "squigglelang",
+  "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#f3eee4",
+    "theme": "light"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Oalvarado031/squiggle",
+    "directory": "packages/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/Oalvarado031/squiggle/issues"
+  },
+  "homepage": "https://github.com/Oalvarado031/squiggle#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "squiggle",
+    "sqg",
+    "creative coding",
+    "generative art",
+    "sketch"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "squiggle",
+        "aliases": [
+          "Squiggle",
+          "squiggle"
+        ],
+        "extensions": [
+          ".sqg"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/sqg-light.svg",
+          "dark": "./icons/sqg-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "squiggle",
+        "scopeName": "source.squiggle",
+        "path": "./syntaxes/squiggle.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "squiggle",
+        "path": "./snippets/squiggle.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "squiggle.openInStudio",
+        "title": "Open in Squiggle Studio",
+        "category": "Squiggle",
+        "icon": "$(link-external)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "squiggle.openInStudio",
+          "when": "editorLangId == squiggle",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "squiggle.openInStudio",
+          "when": "editorLangId == squiggle",
+          "group": "navigation@100"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "squiggle.openInStudio",
+          "when": "editorLangId == squiggle"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Squiggle",
+      "properties": {
+        "squiggle.studioUrl": {
+          "type": "string",
+          "default": "https://squiggle.oiaj2341.workers.dev",
+          "pattern": "^https?://",
+          "patternErrorMessage": "Use a web address that starts with http:// or https://",
+          "markdownDescription": "The Squiggle site that **Open in Squiggle Studio** sends your code to (the address without `/studio`). Point it at a local copy, such as `http://localhost:8787`, while working on Squiggle itself."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[squiggle]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+      }
+    }
+  },
+  "scripts": {
+    "gen": "node scripts/gen-grammar.mjs && node scripts/gen-icons.mjs",
+    "check": "node scripts/check.mjs",
+    "package": "node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.0.13",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
+  }
+}

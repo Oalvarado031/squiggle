@@ -1,0 +1,40 @@
+{
+  "comments": {
+    "lineComment": "//"
+  },
+  "brackets": [["(", ")"], ["[", "]"]],
+  "colorizedBracketPairs": [["(", ")"], ["[", "]"]],
+  "autoClosingPairs": [
+    {
+      "open": "(",
+      "close": ")"
+    },
+    {
+      "open": "[",
+      "close": "]"
+    },
+    {
+      "open": "\"",
+      "close": "\"",
+      "notIn": ["string", "comment"]
+    }
+  ],
+  "autoCloseBefore": ";:.,=)]} \t\n",
+  "surroundingPairs": [["(", ")"], ["[", "]"], ["\"", "\""]],
+  "wordPattern": "#[0-9a-fA-F]+|-?\\d*\\.\\d+|-?\\d+|[A-Za-z_][A-Za-z0-9_]*",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(?:every\\s+frame|repeat|for|if|else|when|make|keep)\\b.*$",
+    "decreaseIndentPattern": "^\\s*else\\b.*$"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(?:every\\s+frame|repeat|for|if|else|when|make|keep)\\b.*$",
+      "action": {
+        "indent": "indent"
+      }
+    }
+  ],
+  "folding": {
+    "offSide": true
+  }
+}

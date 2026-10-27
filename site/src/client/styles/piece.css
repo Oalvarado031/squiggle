@@ -1,0 +1,95 @@
+.piece {
+  padding-top: clamp(24px, 4vw, 48px);
+}
+.piece-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.player {
+  position: sticky;
+  top: 16px;
+}
+.player .stage-sheet {
+  padding: 14px;
+  transform: rotate(-0.4deg);
+}
+.player canvas.is-interactive {
+  cursor: crosshair;
+}
+.player .transport {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.player .time {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.interact-note {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin-left: auto;
+}
+.stamps {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 8px;
+  margin-bottom: 14px;
+}
+.piece-info h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  margin-bottom: 10px;
+  overflow-wrap: anywhere;
+}
+.byline,
+.family {
+  color: var(--ink-2);
+  margin: 0 0 6px;
+  font-size: 16.5px;
+}
+.byline .mono {
+  font-size: 13.5px;
+}
+.piece-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0 28px;
+  align-items: center;
+}
+.code-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.code-head .count {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.code-head .chip {
+  margin-left: auto;
+}
+.piece-info .code-block {
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.remixes {
+  margin-top: 72px;
+}
+@media (max-width: 860px) {
+  .piece-grid {
+    grid-template-columns: 1fr;
+  }
+  .player {
+    position: static;
+  }
+  .player .stage-sheet {
+    transform: none;
+  }
+}

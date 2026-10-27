@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- @head -->
+    <title>Squiggle · code you can post</title>
+    <meta name="description" content="Squiggle is a creative-coding language where every program is a short animated drawing that fits in one post. Write a few lines, watch them move, share the whole thing." />
+    <meta property="og:title" content="Squiggle · code you can post" />
+    <meta property="og:description" content="Write a few lines. Watch them move. Share the whole thing in one post." />
+    <meta property="og:image" content="/og/site.png" />
+    <meta property="og:type" content="website" />
+    <script type="module" src="/src/client/pages/home.ts"></script>
+  </head>
+  <body>
+    <!-- @header -->
+    <main id="main">
+      <section class="hero wrap">
+        <div class="hero-copy">
+          <p class="eyebrow">a language for drawings that move</p>
+          <h1>Code you can post.</h1>
+          <p class="lede">Write a few lines. Watch them move. Share the whole thing in one post.</p>
+          <div class="cta">
+            <a class="btn" href="/studio">Open the studio</a>
+            <a class="btn ghost" href="/wall">See the wall</a>
+          </div>
+        </div>
+        <figure class="hero-sheet sheet">
+          <span class="tape" aria-hidden="true"></span>
+          <div class="hero-art"><canvas class="stage" id="hero-stage" width="512" height="512" aria-label="A Squiggle piece, drawing itself"></canvas></div>
+          <figcaption class="caption">
+            <div class="cap-head">
+              <span class="cap-title" id="hero-title">orbit garden</span>
+              <button class="icon-btn" id="hero-next" type="button" aria-label="Show another piece" title="Another piece"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button>
+            </div>
+            <pre class="cap-code" id="hero-code" aria-label="The code for this piece"></pre>
+            <div class="cap-foot">
+              <span class="mono cap-count" id="hero-count">0 / 280</span>
+              <span class="stamp" id="hero-stamp">fits in a post</span>
+              <a class="cap-link" id="hero-open" href="/studio">Open it in the studio →</a>
+            </div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="prompt-row wrap" aria-label="This week's prompt">
+        <p class="prompt-banner"><span class="eyebrow">this week</span> <span class="theme" data-prompt>weather</span></p>
+        <p class="prompt-note">One theme a week. Pin a piece for it; the three most liked get a stamp when the week ends.</p>
+        <a class="btn small ghost" href="/studio?prompt=1">Draw for it</a>
+      </section>
+
+      <section class="strip wrap" aria-labelledby="strip-h">
+        <div class="section-head">
+          <h2 id="strip-h">Fresh off the wall</h2>
+          <a href="/wall">Everything on the wall →</a>
+        </div>
+        <p class="section-sub">Every piece here is its own source code. Open one and it's yours to remix.</p>
+        <div class="cards" id="strip"></div>
+      </section>
+
+      <section class="steps wrap" aria-labelledby="steps-h">
+        <h2 id="steps-h" class="sr-only">How it works</h2>
+        <ol class="step-list">
+          <li class="step">
+            <span class="step-num">1</span>
+            <h3>write</h3>
+            <p>One command per line: <code>dot</code>, <code>ring</code>, <code>line</code>, <code>repeat</code>. Indent the lines that belong together.</p>
+            <pre class="code-block step-code" id="step-code"></pre>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <h3>watch</h3>
+            <p>Put lines under <code>every frame</code> and <code>t</code> starts counting seconds. The drawing redraws as you type.</p>
+            <div class="sheet step-sheet"><canvas class="stage" id="step-stage" width="256" height="256" aria-label="The code on the left, running"></canvas></div>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <h3>post</h3>
+            <p>Under 280 characters, the code is the post. Links carry the code too, and the wall keeps a copy anyone can remix.</p>
+            <div class="post-mock" aria-hidden="true">
+              <div class="post-head"><span class="avatar"></span><span><b>you</b> <span class="muted">@yourname</span></span></div>
+              <pre class="post-code" id="post-code"></pre>
+              <div class="post-foot"><span class="mono" id="post-count"></span><span class="stamp">fits in a post</span></div>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="anywhere wrap" aria-labelledby="any-h">
+        <h2 id="any-h">Take it with you</h2>
+        <div class="any-grid">
+          <div>
+            <h3>In a terminal</h3>
+            <p>Render any piece to a PNG, MP4 or GIF on macOS, Linux or Windows.</p>
+            <pre class="code-block">npx squigglelang render tide.sqg --out tide.png</pre>
+          </div>
+          <div>
+            <h3>In your editor</h3>
+            <p>Highlighting, snippets and a button that opens the file in the studio.</p>
+            <a class="btn small ghost" href="/downloads/squiggle.vsix" download>VS Code extension (.vsix)</a>
+          </div>
+          <div>
+            <h3>In a repo</h3>
+            <p>A GitHub Action turns every <code>.sqg</code> file into a PNG on push, ready for your README.</p>
+            <a class="btn small ghost" href="https://github.com/Oalvarado031/squiggle/tree/main/action/squiggle-render" data-link="github-action">squiggle-render action</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- @footer -->
+  </body>
+</html>

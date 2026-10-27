@@ -12,7 +12,7 @@
   "scripts": {
     "gen": "node scripts/gen-examples.mjs",
     "test": "npm run gen && vitest run",
-    "typecheck": "tsc --noEmit -p packages/core && tsc --noEmit -p site",
+    "typecheck": "tsc --noEmit -p packages/core && tsc --noEmit -p site && tsc --noEmit -p site/src/worker",
     "build:cli": "npm run build -w squigglelang",
     "build:site": "npm run build -w squiggle-site",
     "deploy": "npm run deploy -w squiggle-site"
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@expo-google-fonts/fraunces": "^0.4.1",
     "@expo-google-fonts/jetbrains-mono": "^0.4.1",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^24.19.2",
     "esbuild": "^0.28.2",
     "typescript": "^5.9.3",

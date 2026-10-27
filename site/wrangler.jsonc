@@ -1,0 +1,23 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "squiggle",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "none", "run_worker_first": true },
+  // Pin renders (a still + a 45-frame preview) and OG cards run resvg; give them room.
+  "limits": { "cpu_ms": 30000 },
+  "rules": [{ "type": "Data", "globs": ["**/*.ttf"], "fallthrough": true }],
+  "d1_databases": [{ "binding": "DB", "database_name": "squiggle", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }],
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "squiggle-media" }],
+  "kv_namespaces": [{ "binding": "KV", "id": "00000000000000000000000000000000" }],
+  "vars": {
+    "TOKEN_MINT": "",
+    "X_URL": "https://x.com/search?q=%23squigglelang",
+    "GITHUB_URL": "https://github.com/Oalvarado031/squiggle"
+  },
+  // Monday 00:05 UTC: close last week's prompt and stamp its top three.
+  "triggers": { "crons": ["5 0 * * 1"] }
+}

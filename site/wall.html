@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- @head -->
+    <title>The wall · Squiggle</title>
+    <meta name="description" content="Pieces people pinned from the Squiggle studio. Every one is its own source code, under 280 characters, ready to remix." />
+    <meta property="og:title" content="The Squiggle wall" />
+    <meta property="og:description" content="Moving drawings, each one its own source code. Open any of them and remix it." />
+    <meta property="og:image" content="/og/site.png" />
+    <script type="module" src="/src/client/pages/wall.ts"></script>
+  </head>
+  <body>
+    <!-- @header -->
+    <main id="main" class="wall wrap">
+      <header class="wall-head">
+        <h1>The wall</h1>
+        <p class="lede">Pinned from the studio. Every piece below is its own source code; open one to read it, remix it or post it.</p>
+        <p class="prompt-banner"><span class="eyebrow">this week</span> <span class="theme" data-prompt>weather</span> <a class="prompt-link" href="/wall?prompt=now">see the entries</a></p>
+      </header>
+      <nav class="tabs" aria-label="Sort the wall">
+        <a href="/wall" data-sort="new">new</a>
+        <a href="/wall?sort=today" data-sort="today">top today</a>
+        <a href="/wall?sort=week" data-sort="week">top week</a>
+        <a href="/wall?prompt=now" data-sort="prompt">this week's prompt</a>
+      </nav>
+      <div class="cards" id="wall" aria-live="polite"></div>
+      <div class="more-row"><button class="btn ghost" id="more" type="button" hidden>Load more</button></div>
+    </main>
+    <!-- @footer -->
+  </body>
+</html>

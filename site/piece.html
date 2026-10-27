@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- @head -->
+    <title>A piece · Squiggle</title>
+    <meta name="description" content="A Squiggle piece: a moving drawing that is its own source code." />
+    <meta property="og:title" content="A Squiggle piece" />
+    <meta property="og:description" content="A moving drawing that is its own source code." />
+    <meta property="og:image" content="/og/site.png" />
+    <meta property="og:type" content="article" />
+    <script type="module" src="/src/client/pages/piece.ts"></script>
+  </head>
+  <body>
+    <!-- @header -->
+    <main id="main" class="piece wrap">
+      <div class="piece-grid">
+        <div class="player">
+          <div class="sheet stage-sheet"><span class="tape" aria-hidden="true"></span><canvas class="stage" id="stage" width="512" height="512" aria-label="The piece, running"></canvas></div>
+          <div class="transport">
+            <button class="icon-btn" id="play" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg></button>
+            <button class="icon-btn" id="restart" type="button" aria-label="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg></button>
+            <output class="mono time" id="time">t = 0.00</output>
+            <span class="interact-note" id="interact-note" hidden></span>
+          </div>
+        </div>
+        <article class="piece-info">
+          <div class="stamps" id="stamps"></div>
+          <h1 id="title">A piece</h1>
+          <p class="byline" id="byline"></p>
+          <p class="family" id="family" hidden></p>
+          <div class="piece-actions" id="actions">
+            <a class="btn" id="remix" href="/studio">Remix</a>
+            <a class="btn ghost" id="post" href="#" target="_blank" rel="noopener">Post on X</a>
+            <button class="btn ghost" id="copy-link" type="button">Copy link</button>
+          </div>
+          <div class="code-head"><span class="eyebrow">the whole piece</span><span class="mono count" id="count"></span><button class="chip" id="copy-code" type="button">copy code</button></div>
+          <pre class="code-block" id="code"></pre>
+        </article>
+      </div>
+      <section class="remixes" id="remixes" hidden aria-labelledby="remix-h">
+        <h2 id="remix-h">Remixes</h2>
+        <div class="cards" id="remix-cards"></div>
+      </section>
+    </main>
+    <script type="application/json" id="piece-data">null</script>
+    <!-- @footer -->
+  </body>
+</html>

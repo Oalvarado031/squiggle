@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- @head -->
+    <title>Learn · Squiggle</title>
+    <meta name="description" content="Ten short steps from a first dot to a moving piece that fits in a post. Each step has code, a canvas and a goal." />
+    <meta property="og:title" content="Learn Squiggle in ten steps" />
+    <meta property="og:description" content="From a first dot to a moving piece that fits in a post." />
+    <meta property="og:image" content="/og/site.png" />
+    <script type="module" src="/src/client/pages/learn.ts"></script>
+  </head>
+  <body>
+    <!-- @header -->
+    <main id="main" class="learn wrap">
+      <nav class="learn-steps" aria-label="Steps" id="dots"></nav>
+      <div class="learn-grid">
+        <section class="lesson" aria-labelledby="lesson-h">
+          <p class="eyebrow" id="lesson-n">step 1 of 10</p>
+          <h1 id="lesson-h">A first dot</h1>
+          <div class="lesson-body" id="lesson-body"></div>
+          <div class="goal" id="goal" aria-live="polite">
+            <span class="goal-mark" aria-hidden="true"></span>
+            <div><span class="eyebrow">goal</span><p id="goal-text"></p></div>
+          </div>
+          <div class="learn-meta"><span class="mono" id="chars">0 / 280</span><button class="chip" id="reset" type="button">start this step over</button></div>
+          <div class="editor learn-editor" id="editor"></div>
+          <div class="problem" id="problem" role="alert" hidden></div>
+        </section>
+        <section class="learn-canvas" aria-label="Canvas">
+          <div class="sheet"><canvas class="stage" id="stage" width="512" height="512" aria-label="The step's code, running"></canvas></div>
+          <div class="learn-nav">
+            <a class="btn ghost small" id="prev" href="#">← Back</a>
+            <a class="btn small" id="next" href="#">Next step →</a>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- @footer -->
+  </body>
+</html>

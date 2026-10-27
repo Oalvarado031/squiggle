@@ -1,0 +1,145 @@
+.learn {
+  padding-top: 22px;
+}
+.learn-steps {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+.learn-steps a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-decoration: none;
+  border: 1.5px solid var(--rule-strong);
+  color: var(--ink-2);
+}
+.learn-steps a.done {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.learn-steps a[aria-current='step'] {
+  border-color: var(--ember);
+  color: var(--ink);
+  box-shadow: 0 0 0 2px var(--ember);
+}
+.learn-steps a.done[aria-current='step'] {
+  color: var(--paper);
+}
+.learn-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+  gap: clamp(22px, 4vw, 48px);
+  align-items: start;
+}
+.lesson h1 {
+  font-size: clamp(36px, 5vw, 60px);
+  margin: 4px 0 14px;
+}
+.lesson-body {
+  font-size: 17.5px;
+  max-width: 62ch;
+}
+.lesson-body .tip {
+  color: var(--ink-2);
+  font-size: 16px;
+  border-left: 2px solid var(--ember);
+  padding-left: 12px;
+}
+.lesson-body ul {
+  padding-left: 1.2em;
+}
+.goal {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1.5px dashed var(--rule-strong);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 18px 0 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.goal p {
+  margin: 2px 0 0;
+}
+.goal-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--rule-strong);
+  flex: none;
+  margin-top: 2px;
+  display: grid;
+  place-items: center;
+}
+.goal.met {
+  border-style: solid;
+  border-color: var(--ember);
+  background: color-mix(in srgb, var(--ember) 7%, transparent);
+}
+.goal.met .goal-mark {
+  border-color: var(--ember);
+  background: var(--ember);
+}
+.goal.met .goal-mark::after {
+  content: '';
+  width: 10px;
+  height: 5px;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+.learn-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.learn-editor {
+  height: auto;
+  min-height: 180px;
+  max-height: 420px;
+}
+.learn-editor .cm-editor {
+  max-height: 420px;
+}
+.learn .problem {
+  margin-top: 10px;
+}
+.learn-canvas {
+  position: sticky;
+  top: 16px;
+}
+.learn-canvas .sheet {
+  padding: 12px;
+}
+.learn-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  gap: 10px;
+}
+.learn-nav .btn[aria-disabled='true'] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+@media (max-width: 860px) {
+  .learn-grid {
+    grid-template-columns: 1fr;
+  }
+  .learn-canvas {
+    position: static;
+  }
+  .learn-steps a {
+    width: 30px;
+    height: 30px;
+  }
+}

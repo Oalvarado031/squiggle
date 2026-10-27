@@ -1,0 +1,113 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 28px 22px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.card-art {
+  display: block;
+  background: var(--sheet);
+  padding: 9px;
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+.card-art:hover {
+  transform: translateY(-2px) rotate(-0.4deg);
+}
+.card .pv {
+  aspect-ratio: 1;
+  width: 100%;
+  background-color: var(--paper-2);
+  background-repeat: no-repeat;
+  border-radius: 2px;
+}
+.card-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: space-between;
+}
+.card-text {
+  min-width: 0;
+}
+.card-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 560;
+  line-height: 1.2;
+  text-decoration: none;
+  font-variation-settings: 'opsz' 36, 'SOFT' 80;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-sub {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 6px;
+  margin-top: 2px;
+}
+.card-sub .mono {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.card-sub .anon {
+  font-style: italic;
+}
+.like {
+  appearance: none;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink-2);
+  border-radius: 999px;
+  padding: 5px 10px 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 13px;
+  cursor: pointer;
+  flex: none;
+}
+.like svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.like:hover {
+  border-color: var(--ember);
+  color: var(--ember-deep);
+}
+.like[aria-pressed='true'] {
+  color: var(--ember-deep);
+  border-color: var(--ember);
+}
+.like[aria-pressed='true'] svg {
+  fill: var(--ember);
+  stroke: var(--ember);
+}
+.like.pop svg {
+  animation: pop 0.35s ease;
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.35);
+  }
+}
+.empty {
+  border: 1.5px dashed var(--rule-strong);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--ink-2);
+}

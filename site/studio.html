@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- @head -->
+    <title>Studio · Squiggle</title>
+    <meta name="description" content="Write Squiggle on the left, watch it move on the right. Share it as a link, pin it to the wall, or save a PNG or a 6-second clip." />
+    <meta property="og:title" content="Squiggle studio" />
+    <meta property="og:description" content="Write a few lines. Watch them move. Share the whole thing in one post." />
+    <meta property="og:image" content="/og/site.png" />
+    <script type="module" src="/src/client/pages/studio.ts"></script>
+  </head>
+  <body class="studio-page">
+    <!-- @header -->
+    <main id="main" class="studio">
+      <div class="studio-bar">
+        <label class="starter">
+          <span class="sr-only">Start from a piece</span>
+          <select id="starter" aria-label="Start from a starter piece"><option value="">Starters…</option></select>
+        </label>
+        <button class="btn small ghost" id="tidy" type="button" title="Lay the code out the standard way">Tidy</button>
+        <button class="btn small ghost" id="squeeze" type="button" title="Shorten the code without changing the art">Squeeze</button>
+        <span class="remix-of" id="remix-of" hidden></span>
+        <div class="meter-wrap">
+          <span class="stamp" id="stamp" hidden>fits in a post</span>
+          <div class="meter" id="meter" role="meter" aria-valuemin="0" aria-valuemax="280" aria-valuenow="0" aria-label="Characters, out of the 280 a post can hold">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="track" cx="22" cy="22" r="18"/><circle class="fill" id="meter-fill" cx="22" cy="22" r="18" pathLength="100" transform="rotate(-90 22 22)"/></svg>
+            <span class="meter-text"><b id="meter-n">0</b><span> / 280</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="studio-grid">
+        <section class="pane code-pane" aria-label="Code">
+          <div class="editor" id="editor"></div>
+          <div class="problem" id="problem" role="alert" hidden></div>
+          <details class="console" id="console">
+            <summary><span>Console</span><span class="console-count" id="console-count"></span></summary>
+            <pre id="console-out" aria-live="polite"></pre>
+          </details>
+        </section>
+        <section class="pane canvas-pane" aria-label="Canvas">
+          <div class="sheet stage-sheet">
+            <canvas class="stage" id="stage" width="512" height="512" aria-label="Your piece, running"></canvas>
+            <span class="stage-note" id="stage-note" hidden></span>
+          </div>
+          <div class="transport">
+            <button class="icon-btn" id="play" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg></button>
+            <button class="icon-btn" id="restart" type="button" aria-label="Restart from t = 0" title="Restart (Ctrl+Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg></button>
+            <input class="scrub" id="scrub" type="range" min="0" max="20" step="0.01" value="0" aria-label="Scrub time" />
+            <output class="mono time" id="time">t = 0.00</output>
+          </div>
+          <div class="actions">
+            <button class="btn small" id="pin" type="button">Pin to the wall</button>
+            <button class="btn small ghost" id="link" type="button">Copy link</button>
+            <button class="btn small ghost" id="png" type="button">Save PNG</button>
+            <button class="btn small ghost" id="clip" type="button">Save 6 s clip</button>
+          </div>
+          <p class="cost mono" id="cost" aria-live="off"></p>
+        </section>
+      </div>
+    </main>
+
+    <dialog class="pin-dialog" id="pin-dialog" aria-labelledby="pin-h">
+      <form method="dialog" id="pin-form">
+        <h2 id="pin-h">Pin it to the wall</h2>
+        <p class="muted">The server runs your code, takes a still at t = 1 and a 3-second preview, and gives the piece its own page.</p>
+        <label>Title <input name="title" id="pin-title" required maxlength="60" autocomplete="off" placeholder="what is it?" /></label>
+        <label>X handle <span class="muted">(optional, shown as text)</span> <input name="handle" id="pin-handle" maxlength="16" autocomplete="off" placeholder="@yourname" pattern="@?[A-Za-z0-9_]{1,15}" /></label>
+        <label class="check"><input type="checkbox" name="prompt" id="pin-prompt" /> <span>Enter it for this week's prompt: <b data-prompt>weather</b></span></label>
+        <p class="pin-error" id="pin-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button class="btn ghost" value="cancel" formnovalidate type="submit">Cancel</button>
+          <button class="btn" id="pin-go" value="pin" type="submit">Pin it</button>
+        </div>
+      </form>
+    </dialog>
+    <!-- @footer -->
+  </body>
+</html>

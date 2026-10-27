@@ -1,0 +1,103 @@
+{
+  "every frame": {
+    "prefix": ["every", "frame"],
+    "body": ["every frame", "\t$0"],
+    "description": "Runs its lines for every frame. t is the time in seconds. Without it, the piece is a still."
+  },
+  "repeat": {
+    "prefix": "repeat",
+    "body": ["repeat ${1:12} as ${2:i}", "\t$0"],
+    "description": "Runs its lines n times, counting i from 0. Leave out \"as\" and the count is still called i."
+  },
+  "for … in": {
+    "prefix": ["for", "forin"],
+    "body": ["for ${1:c} in ${2:[ember, ochre, moss, sea]}", "\t$0"],
+    "description": "Runs its lines once for each item of a list."
+  },
+  "if": {
+    "prefix": "if",
+    "body": ["if ${1:mouse.x > 0}", "\t$0"],
+    "description": "Runs its lines only when the test holds. else (or else if) catches the other case."
+  },
+  "if / else": {
+    "prefix": ["if", "ifelse"],
+    "body": ["if ${1:mouse.x > 0}", "\t$2", "else", "\t$0"],
+    "description": "Runs its lines only when the test holds. else (or else if) catches the other case."
+  },
+  "make": {
+    "prefix": "make",
+    "body": ["make ${1:petal} ${2:a}", "\t$0"],
+    "description": "Defines your own command. The last line is its result, so it works as a function too."
+  },
+  "keep": {
+    "prefix": "keep",
+    "body": ["keep", "\t$0"],
+    "description": "Whatever move, spin, grow, color or width happens inside is undone at the end."
+  },
+  "when key": {
+    "prefix": ["when", "whenkey"],
+    "body": [
+      "when key \"${1|space,enter,left,right,up,down,tab,backspace,escape|}\"",
+      "\t$0"
+    ],
+    "description": "Runs when a key is pressed (keys: \"space\", \"enter\", arrows like \"left\", letters and digits). Change values here; draw in every frame."
+  },
+  "when click": {
+    "prefix": ["when", "whenclick"],
+    "body": ["when click", "\t$0"],
+    "description": "Runs when the canvas is clicked or tapped; mouse holds where."
+  },
+  "dot": {
+    "prefix": "dot",
+    "body": ["dot ${1:0}, ${2:0}, ${3:40}${4:, ${5:ember}}$0"],
+    "description": "dot x, y, size [, color]\nA filled circle. size is the radius in pixels."
+  },
+  "ring": {
+    "prefix": "ring",
+    "body": ["ring ${1:0}, ${2:0}, ${3:40}${4:, ${5:ember}}$0"],
+    "description": "ring x, y, size [, color]\nAn outlined circle, drawn with the current width."
+  },
+  "box": {
+    "prefix": "box",
+    "body": ["box ${1:0}, ${2:0}, ${3:160}, ${4:100}${5:, ${6:ember}}$0"],
+    "description": "box x, y, w, h [, color]\nA filled rectangle centered on x, y."
+  },
+  "line": {
+    "prefix": "line",
+    "body": ["line ${1:-120}, ${2:-80}, ${3:120}, ${4:80}${5:, ${6:ember}}$0"],
+    "description": "line x1, y1, x2, y2 [, color]\nA straight stroke from one point to another."
+  },
+  "path": {
+    "prefix": "path",
+    "body": ["path ${1:[(-120, -80), (0, 120), (120, -80)]}${2:, ${3:ember}}$0"],
+    "description": "path points [, color]\nA stroke through a list of points."
+  },
+  "shape": {
+    "prefix": "shape",
+    "body": ["shape ${1:[(-120, -80), (0, 120), (120, -80)]}${2:, ${3:ember}}$0"],
+    "description": "shape points [, color]\nA filled shape whose corners are a list of points."
+  },
+  "write": {
+    "prefix": "write",
+    "body": [
+      "write ${1:\"hello\"}, ${2:0}, ${3:0}${4:, ${5:40}}${6:, ${7:ember}}$0"
+    ],
+    "description": "write text, x, y [, size] [, color]\nText centered on x, y. size is the letter height in pixels (18 if you leave it out)."
+  },
+  "piece": {
+    "prefix": "piece",
+    "body": [
+      "// ${1:a new piece}",
+      "paper ${2:night}",
+      "width 3",
+      "every frame",
+      "\trepeat ${3:24} as i",
+      "\t\ta = i / $3 * turn + t * ${4:0.4}",
+      "\t\tr = 110 + sin(t * 2 + i / 2) * 50",
+      "\t\tdot polar(r, a), 8, hue(i * 15 + t * 40)",
+      "\tring 0, 0, 60 + sin(t) * 20, ${5:ember}",
+      "$0"
+    ],
+    "description": "A small animated piece to start from: a ring of dots that breathes and turns."
+  }
+}
