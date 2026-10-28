@@ -54,3 +54,17 @@ export function postLength(code: string): number {
 
 /** X shortens every link to 23 characters. */
 export const LINK_LENGTH = 23;
+
+/** The code and its link (on the next line) fit in one post. */
+export function codeFitsWithLink(code: string): boolean {
+  return postLength(code) + 1 + LINK_LENGTH <= 280;
+}
+
+/**
+ * An X post intent. When the code and the link fit, the post is the code itself followed by
+ * the link; otherwise it's the fallback text and the link.
+ */
+export function postIntent(code: string, url: string, fallback: string): string {
+  const text = codeFitsWithLink(code) ? `${postText(code)}\n${url}` : `${fallback} ${url}`;
+  return `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`;
+}

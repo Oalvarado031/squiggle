@@ -281,6 +281,9 @@
   width: 17px;
   height: 17px;
 }
+.pin-done h2 {
+  margin-top: 14px;
+}
 .pin-error {
   color: var(--ember-deep);
   font-size: 14.5px;

@@ -1,4 +1,4 @@
-import { EXAMPLES, POST_LIMIT, decodeCode, encodeCode, postLength, tidy, toErrorInfo, type ErrorInfo, type SqueezeResult, type Warning } from 'squiggle-core';
+import { EXAMPLES, POST_LIMIT, codeFitsWithLink, decodeCode, encodeCode, postIntent, postLength, tidy, toErrorInfo, type ErrorInfo, type SqueezeResult, type Warning } from 'squiggle-core';
 import { $, api, boot, copy, download, esc, slug, store, toast } from '../lib/ui.ts';
 import { Stage, runJob } from '../lib/stage.ts';
 import { createEditor, setCode, showProblems } from '../editor/squiggle.ts';
@@ -276,6 +276,8 @@ $('#pin').addEventListener('click', () => {
   $<HTMLInputElement>('#pin-handle').value = store('sq-handle') ?? '';
   $<HTMLInputElement>('#pin-prompt').checked = params.get('prompt') === '1';
   pinError.hidden = true;
+  $<HTMLFormElement>('#pin-form').hidden = false;
+  $('#pin-done').hidden = true;
   dialog.showModal();
 });
 $<HTMLFormElement>('#pin-form').addEventListener('submit', async (e) => {
@@ -291,12 +293,24 @@ $<HTMLFormElement>('#pin-form').addEventListener('submit', async (e) => {
   const handle = $<HTMLInputElement>('#pin-handle').value.trim().replace(/^@/, '');
   store('sq-handle', handle);
   try {
+    const title = $<HTMLInputElement>('#pin-title').value.trim();
     const r = await api<{ id: string }>('/api/pieces', {
       method: 'POST',
-      body: JSON.stringify({ code, title: $<HTMLInputElement>('#pin-title').value.trim(), handle: handle || null, parent: parentId, prompt: $<HTMLInputElement>('#pin-prompt').checked }),
+      body: JSON.stringify({ code, title, handle: handle || null, parent: parentId, prompt: $<HTMLInputElement>('#pin-prompt').checked }),
     });
     store('sq-draft', '');
-    location.href = `/p/${r.id}`;
+    // Pinned: offer the post right here. It carries the code itself when the code and the link fit.
+    const url = `${location.origin}/p/${r.id}`;
+    $<HTMLAnchorElement>('#pin-post').href = postIntent(code, url, `${title}: ${postLength(code)} characters of Squiggle`);
+    $<HTMLAnchorElement>('#pin-open').href = `/p/${r.id}`;
+    $('#pin-done-note').textContent = codeFitsWithLink(code)
+      ? 'The post will be the code itself, with the link under it.'
+      : 'The code is too long to share with a link in one post, so the post has the title and the link.';
+    $('#pin-copy').onclick = () => copy(url, 'Link copied');
+    $<HTMLFormElement>('#pin-form').hidden = true;
+    $('#pin-done').hidden = false;
+    go.disabled = false;
+    go.textContent = 'Pin it';
   } catch (err) {
     const body = (err as { body?: { error?: ErrorInfo } }).body;
     pinError.textContent = (err as Error).message + (body?.error ? `\nline ${body.error.line}: ${body.error.message}` : '');

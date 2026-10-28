@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { tidy, squeeze, Interp, hashOps, postLength, postText, encodeCode, decodeCode, highlight, highlightHtml, svgFrame, drawFrame, type Ctx2D } from '../src/index.ts';
+import { tidy, squeeze, Interp, hashOps, postLength, postText, encodeCode, decodeCode, highlight, highlightHtml, svgFrame, drawFrame, codeFitsWithLink, postIntent, type Ctx2D } from '../src/index.ts';
 
 describe('tidy', () => {
   it.each([
@@ -107,6 +107,25 @@ describe('post length and share links', () => {
     const payload = await encodeCode(code);
     expect(payload).toMatch(/^[A-Za-z0-9_-]+$/);
     expect(await decodeCode(payload)).toBe(code);
+  });
+
+  it('puts the code itself in the post when the code and the link fit', () => {
+    const code = 'paper ink\nevery frame\n  dot cos(t) * 99, 0, 20, ember\n';
+    const url = 'https://squigglee.online/p/abc12345';
+    const intent = new URL(postIntent(code, url, 'ignored'));
+    expect(intent.origin + intent.pathname).toBe('https://x.com/intent/tweet');
+    expect(intent.searchParams.get('text')).toBe(`${postText(code)}\n${url}`);
+    expect(intent.searchParams.has('url')).toBe(false);
+  });
+
+  it('falls back to the title text when the code and the link would pass 280', () => {
+    const long = 'x = 1\n'.repeat(60);
+    expect(new URL(postIntent(long, 'https://s.test/p/1', 'paper boat: 276 characters of Squiggle')).searchParams.get('text')).toBe('paper boat: 276 characters of Squiggle https://s.test/p/1');
+  });
+
+  it('counts the link as 23 and the newline as 1 (256 fits, 257 does not)', () => {
+    expect(codeFitsWithLink('a'.repeat(256))).toBe(true);
+    expect(codeFitsWithLink('a'.repeat(257))).toBe(false);
   });
 
   it('rejects payloads that are not share links', async () => {

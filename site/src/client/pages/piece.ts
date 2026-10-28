@@ -1,4 +1,4 @@
-import { LINK_LENGTH, POST_LIMIT, highlightHtml, postLength, postText } from 'squiggle-core';
+import { POST_LIMIT, highlightHtml, postIntent, postLength, postText } from 'squiggle-core';
 import { $, ago, api, boot, copy, esc } from '../lib/ui.ts';
 import { Stage } from '../lib/stage.ts';
 import { likeButton, pieceCard, type PieceSummary } from '../lib/cards.ts';
@@ -78,10 +78,8 @@ function render(p: PieceDetail): void {
   $<HTMLAnchorElement>('#remix').href = `/studio?remix=${p.id}`;
   $('#actions').append(likeButton(p.id, p.likes));
 
-  // Post on X: the code itself when it fits next to the link (X counts a link as 23).
-  const fits = n + 1 + LINK_LENGTH <= POST_LIMIT;
-  const text = fits ? postText(p.code) : `${p.title}: ${n} characters of Squiggle`;
-  $<HTMLAnchorElement>('#post').href = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  // Post on X: the code itself, then the link, whenever both fit (X counts a link as 23).
+  $<HTMLAnchorElement>('#post').href = postIntent(p.code, url, `${p.title}: ${n} characters of Squiggle`);
   $('#copy-link').addEventListener('click', () => copy(url, 'Link copied'));
   $('#copy-code').addEventListener('click', () => copy(postText(p.code), 'Code copied'));
 

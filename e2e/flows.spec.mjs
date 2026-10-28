@@ -76,7 +76,12 @@ test('pin, like and remix', async ({ page }) => {
   await page.fill('#pin-title', 'e2e rings');
   await page.fill('#pin-handle', '@e2e_test');
   await page.click('#pin-go');
+  await expect(page.locator('#pin-done')).toBeVisible({ timeout: 30_000 });
+  const intent = new URL(await page.locator('#pin-post').getAttribute('href'));
+  expect(intent.searchParams.get('text')).toMatch(/^paper bone\nevery frame\n[\s\S]*\nhttps?:\/\/[^\s]+\/p\/[a-z0-9]+$/);
+  await page.click('#pin-open');
   await page.waitForURL(/\/p\/[a-z0-9]+$/, { timeout: 30_000 });
+  expect(new URL(await page.locator('#post').getAttribute('href')).searchParams.get('text')).toContain('paper bone\nevery frame');
   await expect(page.locator('#title')).toHaveText('e2e rings');
   await expect(page.locator('#byline')).toContainText('@e2e_test');
   await expect(page.locator('.stamp').first()).toHaveText('fits in a post');

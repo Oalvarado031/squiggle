@@ -5,7 +5,7 @@ export { Interp, Shell, show, typeName, type Frame, type Value, type Warning, ty
 export { hashOps, IDENTITY, type Op, type Mat } from './ops.ts';
 export { drawFrame, TEXT_FONT, type Ctx2D } from './render-canvas.ts';
 export { svgFrame, svgPlaced, svgShapes } from './render-svg.ts';
-export { encodeCode, decodeCode, postLength, postText, LINK_LENGTH } from './share.ts';
+export { encodeCode, decodeCode, postLength, postText, LINK_LENGTH, codeFitsWithLink, postIntent } from './share.ts';
 export { PALETTE_COLORS, fromHex, toCss, toHex, hue, mix, type Color } from './color.ts';
 export * from './vocab.ts';
 
