@@ -18,7 +18,8 @@ run(process.execPath, ['scripts/gen-icons.mjs']);
 run(process.execPath, ['scripts/check.mjs']);
 
 const out = `${pkg.name}-${pkg.version}.vsix`;
-run('npx', ['--yes', '@vscode/vsce@4.0.0', 'package', '--no-dependencies', '--out', out]);
+// Until squiggle.config.json names a repository, the manifest has none; vsce would stop to ask.
+run('npx', ['--yes', '@vscode/vsce@4.0.0', 'package', '--no-dependencies', ...(pkg.repository ? [] : ['--allow-missing-repository']), '--out', out]);
 
 const downloads = join(pkgDir, '..', '..', 'site', 'public', 'downloads');
 mkdirSync(downloads, { recursive: true });

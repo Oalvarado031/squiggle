@@ -19,9 +19,13 @@
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "squiggle-media" }],
   "kv_namespaces": [{ "binding": "KV", "id": "da4e883825d04809a46386d02ea911e8" }],
   "vars": {
+    // Set TOKEN_MINT to show the contract address in the footer chip.
     "TOKEN_MINT": "",
-    "X_URL": "https://x.com/search?q=%23squigglelang",
-    "GITHUB_URL": "https://github.com/Oalvarado031/squiggle",
+    // The values below come from squiggle.config.json (npm run sync-config). Empty hides the link.
+    "REPO_URL": "",
+    "X_URL": "",
+    "AUTHOR_NAME": "",
+    "AUTHOR_URL": "",
     // the workers.dev address redirects here (the API stays reachable on both)
     "CANONICAL_HOST": "squigglee.online"
   },

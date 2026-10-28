@@ -64,11 +64,13 @@ irm https://squigglee.online/install.ps1 | iex               # Windows PowerShel
 
 **GitHub Action**: render every `.sqg` in a repo to PNG on push. See [action/squiggle-render](action/squiggle-render/README.md).
 
+<!-- sync:action-uses -->
 ```yaml
-- uses: Oalvarado031/squiggle/action/squiggle-render@main
+- uses: YOUR-ACCOUNT/squiggle/action/squiggle-render@main
   with:
     commit: 'true'
 ```
+<!-- /sync:action-uses -->
 
 ## How it's built
 

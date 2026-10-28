@@ -22,6 +22,8 @@ jobs:
       - run: npm run build:site
       - name: The action ships the current CLI bundle
         run: npm run build:cli && git diff --exit-code action/squiggle-render/dist
+      - name: Links come from squiggle.config.json and nowhere else
+        run: npm run sync-config -- --check && node scripts/check-links.mjs
 
   pack:
     name: pack squigglelang

@@ -63,6 +63,41 @@ class Text {
   }
 }
 
+/** Fills a link from config, or removes it when its value is empty. */
+class Link {
+  constructor(private href: string) {}
+  element(el: Element) {
+    if (!this.href) {
+      el.remove();
+      return;
+    }
+    el.setAttribute('href', this.href);
+    el.removeAttribute('hidden');
+  }
+}
+
+class Author {
+  constructor(private name: string, private url: string) {}
+  element(el: Element) {
+    if (!this.name) {
+      el.remove();
+      return;
+    }
+    const name = escAttr(this.name);
+    el.setInnerContent(this.url ? `made by <a href="${escAttr(this.url)}" rel="noopener">${name}</a>` : `made by ${name}`, { html: true });
+    el.removeAttribute('hidden');
+  }
+}
+
+export interface Links {
+  repo: string;
+  x: string;
+}
+
+export function links(env: Env): Links {
+  return { repo: (env.REPO_URL ?? '').replace(/\/+$/, ''), x: env.X_URL ?? '' };
+}
+
 class Append {
   constructor(private html: string) {}
   element(el: Element) {
@@ -76,8 +111,10 @@ export async function page(env: Env, res: Response, origin: string, p: PageData,
   let rw = new HTMLRewriter()
     .on('[data-prompt]', new Text(p.theme))
     .on('.ca-chip', new Attr('data-mint', env.TOKEN_MINT ?? ''))
-    .on('a[data-link="github"]', new Attr('href', env.GITHUB_URL ?? 'https://github.com/Oalvarado031/squiggle'))
-    .on('a[data-link="x"]', new Attr('href', env.X_URL ?? 'https://x.com/search?q=%23squigglelang'));
+    .on('a[data-link="repo"]', new Link(links(env).repo))
+    .on('a[data-link="repo-action"]', new Link(links(env).repo && `${links(env).repo}/tree/main/action/squiggle-render`))
+    .on('a[data-link="x"]', new Link(links(env).x))
+    .on('[data-link="author"]', new Author(env.AUTHOR_NAME ?? '', env.AUTHOR_URL ?? ''));
   const image = p.image ? new URL(p.image, origin).toString() : `${origin}/og/site.png`;
   rw = rw.on('meta[property="og:image"]', new Attr('content', image));
   if (p.title) {

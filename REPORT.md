@@ -1,6 +1,6 @@
 # Report
 
-Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squiggle.oiaj2341.workers.dev redirect there) · Repo: https://github.com/Oalvarado031/squiggle (public, MIT).
+Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squiggle.oiaj2341.workers.dev redirect there) · Source: the public GitHub repository set as `repoUrl` in `squiggle.config.json` (MIT).
 
 | Part | State |
 |---|---|
@@ -33,7 +33,7 @@ Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squig
 ## For the owner
 
 - **CA chip:** set `TOKEN_MINT` in `site/wrangler.jsonc` (`vars`) and redeploy (`npm run deploy`); empty means the chip shows "CA" and does nothing.
-- **X link in the footer:** points at a search for `#squigglelang`; set `X_URL` to the account once there is one.
+- **Links (repository, X account, author):** edit `squiggle.config.json`, run `npm run sync-config`, then `npm run deploy`. Empty values hide the link. Today the repository and X account are empty, so the footer shows neither.
 - **npm:** `cd packages/cli && npm run build && npm publish` publishes `squigglelang` (the name was free on 2026-10-27). It already points at squigglee.online.
 - **Analytics:** Cloudflare injects its cookie-free Web Analytics on the custom domain (the CSP allows it). Turn it off in the dashboard under Web Analytics if you don't want it.
 - **Weekly prompt:** the rotation starts with "weather" this week; to choose a theme for a week, insert into D1 `prompts (week, theme)`, e.g. `('2026-W45', 'machines')`.

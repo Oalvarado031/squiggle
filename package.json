@@ -19,7 +19,8 @@
     "e2e": "playwright test",
     "vsix": "npm run package -w squiggle-vscode",
     "record": "npm run gen && esbuild scripts/record.ts --bundle --platform=node --format=esm --outfile=out/record.mjs --external:@napi-rs/canvas --external:@resvg/resvg-wasm --log-level=warning && node out/record.mjs",
-    "hero-gif": "esbuild scripts/hero-gif.ts --bundle --platform=node --format=esm --outfile=out/hero-gif.mjs --external:@napi-rs/canvas --log-level=warning && node out/hero-gif.mjs"
+    "hero-gif": "esbuild scripts/hero-gif.ts --bundle --platform=node --format=esm --outfile=out/hero-gif.mjs --external:@napi-rs/canvas --log-level=warning && node out/hero-gif.mjs",
+    "sync-config": "node scripts/sync-config.mjs"
   },
   "devDependencies": {
     "@expo-google-fonts/fraunces": "^0.4.1",

@@ -36,6 +36,7 @@ New `.sqg` files use two-space indents, Squiggle's house style. Change that per 
 
 ## Learn more
 
+<!-- sync:links -->
 - Squiggle Studio: [squigglee.online/studio](https://squigglee.online/studio)
-- The language in one page: [LANGUAGE.md](https://github.com/Oalvarado031/squiggle/blob/main/LANGUAGE.md)
-- Source and issues: [github.com/Oalvarado031/squiggle](https://github.com/Oalvarado031/squiggle)
+- Every command and built-in: [squigglee.online/reference](https://squigglee.online/reference)
+<!-- /sync:links -->

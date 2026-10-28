@@ -2,6 +2,7 @@
 
 A GitHub Action that renders every `.sqg` file in your repository to a PNG on push, so READMEs can show the art.
 
+<!-- sync:action-uses -->
 ```yaml
 name: Render Squiggle pieces
 on:
@@ -14,10 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: Oalvarado031/squiggle/action/squiggle-render@main
+      - uses: YOUR-ACCOUNT/squiggle/action/squiggle-render@main
         with:
           commit: 'true'
 ```
+
+Replace `YOUR-ACCOUNT/squiggle` with the repository that hosts Squiggle.
+<!-- /sync:action-uses -->
 
 Then in a README: `![tide](pieces/tide.png)`.
 

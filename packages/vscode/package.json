@@ -10,15 +10,7 @@
     "color": "#f3eee4",
     "theme": "light"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Oalvarado031/squiggle",
-    "directory": "packages/vscode"
-  },
-  "bugs": {
-    "url": "https://github.com/Oalvarado031/squiggle/issues"
-  },
-  "homepage": "https://github.com/Oalvarado031/squiggle#readme",
+  "homepage": "https://squigglee.online",
   "engines": {
     "vscode": "^1.85.0"
   },

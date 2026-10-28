@@ -131,3 +131,13 @@ test('night print theme sticks', async ({ page }) => {
   await page.goto('/wall');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'night');
 });
+
+test('footer links come from squiggle.config.json, and empty ones are hidden', async ({ page }) => {
+  const cfg = JSON.parse(readFileSync(new URL('../squiggle.config.json', import.meta.url), 'utf8'));
+  await page.goto('/');
+  for (const [sel, url] of [['a[data-link="x"]', cfg.xUrl], ['a[data-link="repo"]', cfg.repoUrl], ['a[data-link="repo-action"]', cfg.repoUrl && `${cfg.repoUrl}/tree/main/action/squiggle-render`]]) {
+    if (url) await expect(page.locator(sel)).toHaveAttribute('href', url);
+    else await expect(page.locator(sel)).toHaveCount(0);
+  }
+  await expect(page.locator('a[href*="x.com/search"]')).toHaveCount(0);
+});

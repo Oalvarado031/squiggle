@@ -8,11 +8,25 @@
     "squiggle": "bin/squiggle.js",
     "squigglelang": "bin/squiggle.js"
   },
-  "files": ["bin", "dist", "fonts", "README.md", "LICENSE"],
-  "engines": { "node": ">=18.17" },
-  "keywords": ["squiggle", "creative-coding", "generative-art", "language", "canvas", "cli"],
-  "repository": { "type": "git", "url": "git+https://github.com/Oalvarado031/squiggle.git", "directory": "packages/cli" },
-  "homepage": "https://github.com/Oalvarado031/squiggle#readme",
+  "files": [
+    "bin",
+    "dist",
+    "fonts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "squiggle",
+    "creative-coding",
+    "generative-art",
+    "language",
+    "canvas",
+    "cli"
+  ],
+  "homepage": "https://squigglee.online",
   "scripts": {
     "build": "node build.mjs"
   },
