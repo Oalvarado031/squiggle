@@ -105,7 +105,7 @@ test('learn: a goal is checked as you type @phone', async ({ page }) => {
   await expect(page.locator('#dots a').first()).toHaveClass(/done/);
 });
 
-test('all ten learn steps load and their starting code runs', async ({ page }) => {
+test('all ten learn steps load and their starting code runs @phone', async ({ page }) => {
   const errors = errorsOf(page);
   for (let k = 1; k <= 10; k++) {
     await page.goto(`/learn#${k}`);
