@@ -1,6 +1,6 @@
 # Report
 
-Status as of 2026-10-27 (UTC). **Live: https://squiggle.oiaj2341.workers.dev** · Repo: https://github.com/Oalvarado031/squiggle (public, MIT).
+Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squiggle.oiaj2341.workers.dev redirect there) · Repo: https://github.com/Oalvarado031/squiggle (public, MIT).
 
 | Part | State |
 |---|---|
@@ -17,9 +17,10 @@ Status as of 2026-10-27 (UTC). **Live: https://squiggle.oiaj2341.workers.dev** �
 
 ## Production checks (after the last deploy)
 
-- **Playwright against production: 11 of 11 pass.** Typing with plain errors and the underline, runaway-loop note, share link → code restored and `og:image` points at `/og/c/…`, PNG and 6 s clip downloads, pin → piece page → like → remix → wall, learn goals on desktop and 375 px, all ten learn steps, reference, night print theme. The test piece was hidden afterwards.
-- **Lighthouse (mobile preset) on production: home and /studio score 100 in performance, accessibility, best practices and SEO.** Before the stamp contrast fix (DECISIONS #28), accessibility was 96; performance was 100 on all six runs (LCP 0.8 to 1.4 s).
+- **Playwright against https://squigglee.online: 12 of 12 pass** (desktop, plus 375 px for the studio, a learn goal and all ten learn steps). Typing with plain errors and the underline, runaway-loop note, share link → code restored and `og:image` points at `/og/c/…`, PNG and 6 s clip downloads, pin → piece page → like → remix → wall, learn goals on desktop and 375 px, all ten learn steps, reference, night print theme. The test piece was hidden afterwards.
+- **Lighthouse (mobile preset) on https://squigglee.online: home and /studio score 100 in performance, accessibility, best practices and SEO** (LCP 1.0 s and 1.5 s).
 - No console errors and no horizontal scroll at 1440 px and 375 px on home, studio, wall, a piece page, learn, reference and the 404.
+- HTTPS certificate issued by Google Trust Services through Cloudflare (renewed automatically); `www` and the workers.dev address answer with 301 to squigglee.online, the API stays reachable on both.
 - OG cards: fetched as `Twitterbot/1.0`, a piece page carries `og:title`, `og:description`, `og:image` (1200 × 630 PNG), `twitter:card=summary_large_image`, `twitter:image` and `og:url`; the image answers 200 `image/png`. X retired its public card validator, so the last check is pasting a link into the post composer.
 - Pinning in production renders the still and the 45-frame preview into R2 in about 1.5 s per piece.
 - CI on GitHub: all six jobs green (tests, pack, npx on three OSes, the action).
@@ -33,7 +34,8 @@ Status as of 2026-10-27 (UTC). **Live: https://squiggle.oiaj2341.workers.dev** �
 
 - **CA chip:** set `TOKEN_MINT` in `site/wrangler.jsonc` (`vars`) and redeploy (`npm run deploy`); empty means the chip shows "CA" and does nothing.
 - **X link in the footer:** points at a search for `#squigglelang`; set `X_URL` to the account once there is one.
-- **npm:** `cd packages/cli && npm run build && npm publish` publishes `squigglelang` (the name was free on 2026-10-27).
+- **npm:** `cd packages/cli && npm run build && npm publish` publishes `squigglelang` (the name was free on 2026-10-27). It already points at squigglee.online.
+- **Analytics:** Cloudflare injects its cookie-free Web Analytics on the custom domain (the CSP allows it). Turn it off in the dashboard under Web Analytics if you don't want it.
 - **Weekly prompt:** the rotation starts with "weather" this week; to choose a theme for a week, insert into D1 `prompts (week, theme)`, e.g. `('2026-W45', 'machines')`.
 - **Moderation:** `POST /api/admin/hide {"id": "…"}` with `Authorization: Bearer <.admin-token>` hides a piece (`"hidden": false` brings it back).
 

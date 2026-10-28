@@ -21,7 +21,9 @@
   "vars": {
     "TOKEN_MINT": "",
     "X_URL": "https://x.com/search?q=%23squigglelang",
-    "GITHUB_URL": "https://github.com/Oalvarado031/squiggle"
+    "GITHUB_URL": "https://github.com/Oalvarado031/squiggle",
+    // the workers.dev address redirects here (the API stays reachable on both)
+    "CANONICAL_HOST": "squigglee.online"
   },
   // Monday 00:05 UTC: close last week's prompt and stamp its top three.
   "triggers": { "crons": ["5 0 * * 1"] }

@@ -18,11 +18,12 @@ export async function securityHeaders(h: Headers): Promise<void> {
     'content-security-policy',
     [
       "default-src 'self'",
-      `script-src 'self' 'sha256-${await themeHash()}'`,
+      // Cloudflare Web Analytics (cookie-free) is injected on the custom domain
+      `script-src 'self' 'sha256-${await themeHash()}' https://static.cloudflareinsights.com`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
-      "connect-src 'self'",
+      "connect-src 'self' https://cloudflareinsights.com",
       "worker-src 'self' blob:",
       "media-src 'self' blob:",
       "frame-ancestors 'none'",
