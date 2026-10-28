@@ -4,7 +4,7 @@ import fraunces600 from './fonts/Fraunces_600SemiBold.ttf';
 import mono400 from './fonts/JetBrainsMono_400Regular.ttf';
 import { EXAMPLES, decodeCode } from 'squiggle-core';
 import type { Env } from './env.ts';
-import { page, securityHeaders } from './html.ts';
+import { links, page, securityHeaders } from './html.ts';
 import { allow, detail, hide, ipHash, like, list, pin, promptInfo } from './pieces.ts';
 import { finalizeWeek, themeFor, weekStart } from './prompt.ts';
 import { cardOps, configureRenderer, ogCard } from './render.ts';
@@ -44,11 +44,12 @@ async function siteCard(env: Env): Promise<Response> {
 }
 
 async function pieceCard(env: Env, id: string): Promise<Response> {
-  const res = await cached(env, `p/${id}/og.png`, async () => {
-    const row = await env.DB.prepare('SELECT code, title, handle FROM pieces WHERE id = ? AND hidden = 0').bind(id).first<{ code: string; title: string; handle: string | null }>();
+  // v2: house pieces say "by squiggle" instead of an @handle
+  const res = await cached(env, `p/${id}/og-v2.png`, async () => {
+    const row = await env.DB.prepare('SELECT code, title, handle, house FROM pieces WHERE id = ? AND hidden = 0').bind(id).first<{ code: string; title: string; handle: string | null; house: number }>();
     if (!row) return null;
     await renderer();
-    return ogCard(cardOps(row.code), { title: row.title, handle: row.handle, code: row.code });
+    return ogCard(cardOps(row.code), { title: row.title, byline: row.house ? 'by squiggle' : row.handle ? `@${row.handle}` : null, code: row.code });
   });
   return res ?? siteCard(env);
 }
@@ -136,14 +137,14 @@ async function handle(req: Request, env: Env): Promise<Response> {
   if (m) {
     const p = await detail(env, m[1]);
     if (!p) return notFound(env, req, origin, theme);
-    const handleText = p.handle ? ` by @${p.handle}` : '';
+    const handleText = p.house ? ' by squiggle' : p.handle ? ` by @${p.handle}` : '';
     return page(env, await asset(env, req, '/piece'), origin, {
       theme,
       title: `${p.title} · Squiggle`,
       description: `${p.title}${handleText}: a moving drawing in ${p.chars} characters of Squiggle. Open it to read the code or remix it.`,
       image: `/og/p/${m[1]}.png`,
       canonical: `/p/${m[1]}`,
-      data: { piece: p },
+      data: { piece: p, links: links(env) },
     });
   }
 

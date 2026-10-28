@@ -141,3 +141,15 @@ test('footer links come from squiggle.config.json, and empty ones are hidden', a
   }
   await expect(page.locator('a[href*="x.com/search"]')).toHaveCount(0);
 });
+
+test('house pieces say "by squiggle" and never link to an X account we don\'t own @phone', async ({ page }) => {
+  const errors = errorsOf(page);
+  await page.goto('/wall');
+  const house = page.locator('.card', { hasText: 'by squiggle' }).first();
+  await expect(house).toBeVisible();
+  await expect(page.locator('.card .by', { hasText: '@squiggle' })).toHaveCount(0);
+  await house.locator('a.card-title').click();
+  await expect(page.locator('#byline')).toContainText('by squiggle');
+  await expect(page.locator('a[href*="x.com/squiggle"]')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

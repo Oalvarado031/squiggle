@@ -9,16 +9,20 @@ boot();
 
 interface PieceDetail extends PieceSummary {
   code: string;
-  parent: { id: string; title: string; handle: string | null } | null;
+  parent: { id: string; title: string; handle: string | null; house: number } | null;
   remix_list: PieceSummary[];
   stamps: Array<{ week: string; theme: string; rank: number }>;
 }
 
 const RANK = ['1st', '2nd', '3rd'];
 
+/** links from squiggle.config.json, sent along with the page */
+let siteLinks: { x: string; repo: string } = { x: '', repo: '' };
+
 async function data(): Promise<PieceDetail | null> {
   try {
-    const injected = JSON.parse($('#piece-data').textContent || 'null') as { piece: PieceDetail } | null;
+    const injected = JSON.parse($('#piece-data').textContent || 'null') as { piece: PieceDetail; links?: typeof siteLinks } | null;
+    if (injected?.links) siteLinks = injected.links;
     if (injected?.piece) return injected.piece;
   } catch {
     // fall back to the API
@@ -46,7 +50,14 @@ function render(p: PieceDetail): void {
   const n = postLength(p.code);
   $('#title').textContent = p.title;
   document.title = `${p.title} · Squiggle`;
-  const by = p.handle ? `by <a href="https://x.com/${encodeURIComponent(p.handle)}" rel="noopener nofollow">@${esc(p.handle)}</a>` : 'by someone who left no name';
+  // House pieces never link to an X account we might not own; a person's handle links to their profile.
+  const by = p.house
+    ? siteLinks.x
+      ? `by <a href="${esc(siteLinks.x)}" rel="noopener">squiggle</a>`
+      : 'by squiggle'
+    : p.handle
+      ? `by <a href="https://x.com/${encodeURIComponent(p.handle)}" rel="noopener nofollow">@${esc(p.handle)}</a>`
+      : 'by someone who left no name';
   $('#byline').innerHTML = `${by} · ${ago(p.created_at)} · <span class="mono">${n} chars</span>`;
 
   const stamps = $('#stamps');
@@ -55,7 +66,7 @@ function render(p: PieceDetail): void {
   if (p.interactive) stamps.insertAdjacentHTML('beforeend', '<span class="stamp ink">interactive</span>');
 
   const family: string[] = [];
-  if (p.parent) family.push(`remixed from <a href="/p/${esc(p.parent.id)}">${esc(p.parent.title)}</a>${p.parent.handle ? ` by @${esc(p.parent.handle)}` : ''}`);
+  if (p.parent) family.push(`remixed from <a href="/p/${esc(p.parent.id)}">${esc(p.parent.title)}</a>${p.parent.house ? ' by squiggle' : p.parent.handle ? ` by @${esc(p.parent.handle)}` : ''}`);
   if (p.remixes) family.push(`<a href="#remixes">${p.remixes} remix${p.remixes === 1 ? '' : 'es'}</a>`);
   if (family.length) {
     $('#family').innerHTML = family.join(' · ');

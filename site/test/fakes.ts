@@ -32,7 +32,7 @@ class Stmt {
 
 export function fakeD1() {
   const db = new DatabaseSync(':memory:');
-  db.exec(readFileSync(fileURLToPath(new URL('../migrations/0001_init.sql', import.meta.url)), 'utf8'));
+  for (const m of ['0001_init.sql', '0002_house.sql']) db.exec(readFileSync(fileURLToPath(new URL(`../migrations/${m}`, import.meta.url)), 'utf8'));
   return {
     raw: db,
     prepare: (sql: string) => new Stmt(db, sql),

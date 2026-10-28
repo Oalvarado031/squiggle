@@ -142,7 +142,8 @@ function wrap(text: string, size: number, width: number, maxLines: number): stri
 
 export interface CardText {
   title: string;
-  handle?: string | null;
+  /** "@ana" for a person, "by squiggle" for the house, nothing when anonymous */
+  byline?: string | null;
   code: string;
   /** small line above the title */
   kicker?: string;
@@ -159,7 +160,7 @@ export function ogCard(ops: Op[], text: CardText): Uint8Array {
   }
   const titleY = 250 - ((lines.length - 1) * size * 1.08) / 2;
   const title = lines.map((l, k) => `<tspan x="668" y="${(titleY + k * size * 1.08).toFixed(1)}">${esc(l)}</tspan>`).join('');
-  const by = text.handle ? `@${text.handle}` : '';
+  const by = text.byline ?? '';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
 <defs><filter id="sh" x="-10%" y="-10%" width="120%" height="125%"><feGaussianBlur stdDeviation="12"/></filter></defs>
 <rect width="1200" height="630" fill="#f3eee4"/>

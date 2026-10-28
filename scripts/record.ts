@@ -400,7 +400,7 @@ await configureRenderer(readFileSync(join(ROOT, 'node_modules/@resvg/resvg-wasm/
   readFileSync(font('Fraunces_600SemiBold.ttf')),
   readFileSync(font('JetBrainsMono_400Regular.ttf')),
 ]);
-const card = ogCard(new Interp(code).frame(1).ops, { title: piece.title, handle: 'squiggle', code });
+const card = ogCard(new Interp(code).frame(1).ops, { title: piece.title, byline: 'by squiggle', code });
 const outDir = join(ROOT, 'launch');
 mkdirSync(outDir, { recursive: true });
 if (process.env.SNAP) {

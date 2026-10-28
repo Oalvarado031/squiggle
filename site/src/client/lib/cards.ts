@@ -4,6 +4,8 @@ export interface PieceSummary {
   id: string;
   title: string;
   handle: string | null;
+  /** a house piece, credited to Squiggle itself */
+  house: boolean;
   chars: number;
   likes: number;
   remixes: number;
@@ -69,7 +71,7 @@ export function likeButton(id: string, count: number): HTMLButtonElement {
 export function pieceCard(p: PieceSummary): HTMLElement {
   const el = document.createElement('article');
   el.className = 'card';
-  const by = p.handle ? `<span class="by">@${esc(p.handle)}</span>` : '<span class="by anon">anonymous</span>';
+  const by = p.house ? '<span class="by">by squiggle</span>' : p.handle ? `<span class="by">@${esc(p.handle)}</span>` : '<span class="by anon">anonymous</span>';
   el.innerHTML = `
     <a class="card-art" href="/p/${p.id}" aria-label="${esc(p.title)}"><div class="pv" role="img" aria-label="${esc(p.title)}"></div></a>
     <div class="card-meta">

@@ -1,4 +1,4 @@
-// Pins the 12 seed pieces to the wall under @squiggle, so it isn't empty on day one.
+// Pins the 12 seed pieces to the wall as house pieces ("by squiggle"), so it isn't empty on day one.
 //   node scripts/seed.mjs https://squiggle.example.workers.dev
 // Uses the admin token from .admin-token (written by scripts/deploy.mjs). Re-running is
 // harmless: the server returns the existing piece for the same code.
@@ -19,7 +19,7 @@ for (const f of files) {
   const res = await fetch(`${base}/api/pieces`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
-    body: JSON.stringify({ code, title, handle: 'squiggle' }),
+    body: JSON.stringify({ code, title, house: true }),
   });
   const body = await res.json();
   console.log(res.ok ? `${title.padEnd(16)} ${base}/p/${body.id}${body.existing ? ' (already there)' : ''}` : `${title}: ${res.status} ${body.message}`);

@@ -23,16 +23,19 @@ export interface Row {
   preview_cols: number;
   preview_cell: number;
   hidden: number;
+  house: number;
   created_at: number;
 }
 
-const LIST_COLUMNS = 'id, title, handle, chars, animated, interactive, parent_id, prompt_week, likes, remixes, preview_frames, preview_fps, preview_cols, created_at';
+const LIST_COLUMNS = 'id, title, handle, house, chars, animated, interactive, parent_id, prompt_week, likes, remixes, preview_frames, preview_fps, preview_cols, created_at';
 
 export function summary(r: Omit<Row, 'code' | 'code_hash' | 'hidden' | 'preview_cell'>) {
   return {
     id: r.id,
     title: r.title,
-    handle: r.handle,
+    // house pieces carry no handle: they're credited to Squiggle, never to an X account
+    handle: r.house ? null : r.handle,
+    house: !!r.house,
     chars: r.chars,
     likes: r.likes,
     remixes: r.remixes,
@@ -75,16 +78,18 @@ export async function allow(env: Env, key: string, limit: number): Promise<boole
 // ---- pin ----
 
 export async function pin(env: Env, req: Request): Promise<Response> {
-  let body: { code?: unknown; title?: unknown; handle?: unknown; parent?: unknown; prompt?: unknown };
+  let body: { code?: unknown; title?: unknown; handle?: unknown; parent?: unknown; prompt?: unknown; house?: unknown };
   try {
     body = await req.json();
   } catch {
     return problem(400, 'Send the piece as JSON.');
   }
   const admin = isAdmin(env, req);
+  // Only the admin token can pin as the house (the seed and prompt-starter scripts).
+  const house = admin && (body.house === true || (typeof body.handle === 'string' && /^@?squiggle$/i.test(body.handle.trim())));
   const code = typeof body.code === 'string' ? postText(body.code) + '\n' : '';
   const title = typeof body.title === 'string' ? body.title.replace(/\s+/g, ' ').trim() : '';
-  const handle = typeof body.handle === 'string' && body.handle.trim() ? body.handle.trim().replace(/^@/, '') : null;
+  const handle = !house && typeof body.handle === 'string' && body.handle.trim() ? body.handle.trim().replace(/^@/, '') : null;
   const parent = typeof body.parent === 'string' && /^[a-z0-9]{6,12}$/.test(body.parent) ? body.parent : null;
 
   if (!code.trim()) return problem(422, 'There is no code to pin.');
@@ -137,9 +142,9 @@ export async function pin(env: Env, req: Request): Promise<Response> {
 
   const stmts = [
     env.DB.prepare(
-      `INSERT INTO pieces (id, code, code_hash, title, handle, chars, animated, interactive, parent_id, prompt_week, preview_frames, preview_fps, preview_cols, preview_cell, ip_hash, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    ).bind(id, code, codeHash, title, handle, postLength(code), r.animated ? 1 : 0, r.interactive ? 1 : 0, parentRow?.id ?? null, body.prompt === true ? weekId(now) : null, r.frames, r.fps, r.cols, r.cell, ip, now),
+      `INSERT INTO pieces (id, code, code_hash, title, handle, house, chars, animated, interactive, parent_id, prompt_week, preview_frames, preview_fps, preview_cols, preview_cell, ip_hash, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).bind(id, code, codeHash, title, handle, house ? 1 : 0, postLength(code), r.animated ? 1 : 0, r.interactive ? 1 : 0, parentRow?.id ?? null, body.prompt === true ? weekId(now) : null, r.frames, r.fps, r.cols, r.cell, ip, now),
   ];
   if (parentRow) stmts.push(env.DB.prepare('UPDATE pieces SET remixes = remixes + 1 WHERE id = ?').bind(parentRow.id));
   await env.DB.batch(stmts);
@@ -202,7 +207,7 @@ export async function detail(env: Env, id: string): Promise<Record<string, unkno
   const row = await env.DB.prepare('SELECT * FROM pieces WHERE id = ? AND hidden = 0').bind(id).first<Row>();
   if (!row) return null;
   const [parent, remixes, stamps] = await Promise.all([
-    row.parent_id ? env.DB.prepare('SELECT id, title, handle FROM pieces WHERE id = ? AND hidden = 0').bind(row.parent_id).first<{ id: string; title: string; handle: string | null }>() : null,
+    row.parent_id ? env.DB.prepare('SELECT id, title, CASE WHEN house = 1 THEN NULL ELSE handle END AS handle, house FROM pieces WHERE id = ? AND hidden = 0').bind(row.parent_id).first<{ id: string; title: string; handle: string | null; house: number }>() : null,
     env.DB.prepare(`SELECT ${LIST_COLUMNS} FROM pieces WHERE parent_id = ? AND hidden = 0 ORDER BY created_at DESC LIMIT 12`).bind(id).all<Row>(),
     env.DB.prepare('SELECT week, rank FROM prompt_winners WHERE piece_id = ? ORDER BY week').bind(id).all<{ week: string; rank: number }>(),
   ]);

@@ -83,12 +83,26 @@ describe('pinning', () => {
     expect(((await res.json()) as { message: string }).message).toBe(message);
   });
 
-  it('lets the admin token pin as @squiggle without using up the network\'s pins', async () => {
+  it('lets the admin token pin house pieces without using up the network\'s pins', async () => {
     for (let k = 0; k < 8; k++) {
-      const res = await pin(env, req('/api/pieces', { code: `dot ${k}, 0, 9`, title: 'seed', handle: 'squiggle' }, undefined, { authorization: 'Bearer admin-secret' }));
+      const res = await pin(env, req('/api/pieces', { code: `dot ${k}, 0, 9`, title: 'seed', house: true }, undefined, { authorization: 'Bearer admin-secret' }));
       expect(res.status).toBe(201);
     }
     await pinOk({ code: 'dot 50, 0, 9', title: 'mine' });
+  });
+
+  it('credits house pieces to Squiggle, never to an X handle', async () => {
+    const res = await pin(env, req('/api/pieces', { code: ORBIT, title: 'seed', handle: '@squiggle' }, undefined, { authorization: 'Bearer admin-secret' }));
+    const { id } = (await res.json()) as { id: string };
+    expect(await detail(env, id)).toMatchObject({ house: true, handle: null });
+    expect(env.DB.raw.prepare('SELECT handle, house FROM pieces WHERE id = ?').get(id)).toEqual({ handle: null, house: 1 });
+  });
+
+  it("doesn't let people pin as the house", async () => {
+    const res = await pin(env, req('/api/pieces', { code: ORBIT, title: 'x', house: true }));
+    expect(res.status).toBe(201);
+    const { id } = (await res.json()) as { id: string };
+    expect(await detail(env, id)).toMatchObject({ house: false });
   });
 
   it('limits pins per network per hour, but not for the admin', async () => {
