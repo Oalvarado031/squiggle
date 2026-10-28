@@ -153,9 +153,9 @@ async function handle(req: Request, env: Env): Promise<Response> {
   // ---- everything else is a static file ----
   const res = await env.ASSETS.fetch(req);
   if (res.status === 404) return notFound(env, req, origin, theme);
-  if (path.endsWith('.sh') || path.endsWith('.ps1')) {
+  if (path.endsWith('.sh') || path.endsWith('.ps1') || path.endsWith('.vsix')) {
     const headers = new Headers(res.headers);
-    headers.set('content-type', 'text/plain; charset=utf-8');
+    headers.set('content-type', path.endsWith('.vsix') ? 'application/vsix' : 'text/plain; charset=utf-8');
     return new Response(res.body, { status: res.status, headers });
   }
   if ((res.headers.get('content-type') ?? '').includes('text/html')) {

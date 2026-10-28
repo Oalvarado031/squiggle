@@ -53,3 +53,7 @@ Numbered so code and commits can point at them. Newest last.
 **25. Exports** come from a fresh interpreter (clicks and keys pressed so far don't leak in): PNG at 1024 px, and 6-second clips at 30 fps as MP4 (WebCodecs H.264 through mp4-muxer) or, where the browser can't encode H.264, GIF at 20 fps.
 
 **26. Launch assets are drawn, not screen-recorded.** `npm run record` draws the 20-second clip frame by frame with the real interpreter and the real OG card renderer, then encodes vertical and horizontal MP4s with ffmpeg; `npm run hero-gif` makes the README GIF. Re-running gives the same video.
+
+**27. Production.** Cloudflare account `oiaj2341@gmail.com` (the one that hosts the other launches), Worker `squiggle` at https://squiggle.oiaj2341.workers.dev, D1 `squiggle`, R2 `squiggle-media`, KV `squiggle`. Resource ids live in `site/wrangler.jsonc` (they aren't secrets); `IP_SALT` and `ADMIN_TOKEN` are Worker secrets, and the admin token is also in `.admin-token` (gitignored) for the seed script. Pins made with the admin token are stored with the network `admin`, so seeding never uses up anyone's six pins an hour. `scripts/deploy.mjs` and `scripts/seed.mjs` can be re-run safely.
+
+**28. The stamp uses the deeper ember** (`--ember-deep`) for its small uppercase text: the bright ember on paper was 3.2:1, under the 4.5:1 that small text needs. The bright ember stays for large marks and the OG card.

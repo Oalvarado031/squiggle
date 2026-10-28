@@ -83,9 +83,12 @@ describe('pinning', () => {
     expect(((await res.json()) as { message: string }).message).toBe(message);
   });
 
-  it('lets the admin token pin as @squiggle', async () => {
-    const res = await pin(env, req('/api/pieces', { code: ORBIT, title: 'seed', handle: 'squiggle' }, undefined, { authorization: 'Bearer admin-secret' }));
-    expect(res.status).toBe(201);
+  it('lets the admin token pin as @squiggle without using up the network\'s pins', async () => {
+    for (let k = 0; k < 8; k++) {
+      const res = await pin(env, req('/api/pieces', { code: `dot ${k}, 0, 9`, title: 'seed', handle: 'squiggle' }, undefined, { authorization: 'Bearer admin-secret' }));
+      expect(res.status).toBe(201);
+    }
+    await pinOk({ code: 'dot 50, 0, 9', title: 'mine' });
   });
 
   it('limits pins per network per hour, but not for the admin', async () => {

@@ -1,6 +1,7 @@
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "squiggle",
+  "account_id": "3c6da0286b93a75175cbc3f1f12c345a",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-10-20",
   "workers_dev": true,
@@ -10,9 +11,9 @@
   // Pin renders (a still + a 45-frame preview) and OG cards run resvg; give them room.
   "limits": { "cpu_ms": 30000 },
   "rules": [{ "type": "Data", "globs": ["**/*.ttf"], "fallthrough": true }],
-  "d1_databases": [{ "binding": "DB", "database_name": "squiggle", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "squiggle", "database_id": "1e919185-669e-44a2-a54d-a2f54c28ffd4", "migrations_dir": "migrations" }],
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "squiggle-media" }],
-  "kv_namespaces": [{ "binding": "KV", "id": "00000000000000000000000000000000" }],
+  "kv_namespaces": [{ "binding": "KV", "id": "da4e883825d04809a46386d02ea911e8" }],
   "vars": {
     "TOKEN_MINT": "",
     "X_URL": "https://x.com/search?q=%23squigglelang",

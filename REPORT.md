@@ -1,30 +1,41 @@
 # Report
 
-Status as of 2026-10-27. Repo: https://github.com/Oalvarado031/squiggle (public, MIT).
+Status as of 2026-10-27 (UTC). **Live: https://squiggle.oiaj2341.workers.dev** · Repo: https://github.com/Oalvarado031/squiggle (public, MIT).
 
 | Part | State |
 |---|---|
-| Language: lexer, parser, interpreter, errors, limits | Done. 547 tests pass (493 language, 54 Worker API), determinism hashes pinned for all 42 pieces |
-| Studio: CodeMirror editor, live canvas in a Web Worker, post meter, share links, PNG, MP4/GIF clip, pin | Done, checked locally in Chromium and Google Chrome (both export MP4) |
-| Wall: pin, server renders, previews, likes, sorts, remix family, weekly prompt, OG cards | Done locally (wrangler dev with local D1/R2/KV) |
-| Learn (10 steps) and reference | Done; every step's goal and every reference example run in the e2e suite |
+| Language: lexer, parser, interpreter, errors, limits | Done. 547 tests pass (493 language, 54 Worker API); frame hashes pinned at t = 0, 1, 2 for all 42 pieces |
+| Studio: CodeMirror editor, live canvas in a Web Worker, post meter, share links, PNG, MP4/GIF clip, pin | **Live**; MP4 export checked in Chromium and Google Chrome |
+| Wall: pin, server renders, previews playing in view, likes, new / top today / top week, remix family, weekly prompt, OG cards | **Live**, with the 12 seed pieces pinned as @squiggle |
+| Learn (10 steps) and reference | **Live**; all ten steps and every reference example run in the e2e suite |
 | 30 starters, 12 seeds | Done; all fit in a post |
-| CLI `squigglelang` | Done. CI renders PNG, MP4 and GIF through `npx` from the packed tarball on Ubuntu, macOS and Windows. **Not published to npm** (owner's decision) |
-| Install scripts | `/install.sh` and `/install.ps1`; they work once the package is on npm |
-| VS Code extension | `.vsix` built (16.5 KB) and served at `/downloads/squiggle.vsix`; not on the marketplace (needs a publisher account) |
+| CLI `squigglelang` | Done. CI renders PNG, MP4 and GIF through `npx` from the packed tarball on Ubuntu, macOS and Windows. **Not published to npm** (owner's decision): until it is, `npx squigglelang` from the registry and the install scripts won't find it |
+| Install scripts | Served at `/install.sh` and `/install.ps1` (they only run `npm i -g squigglelang`) |
+| VS Code extension | `.vsix` (16.5 KB) at `/downloads/squiggle.vsix`; installs in VS Code (checked with a throwaway profile). Not on the Marketplace: that needs a publisher account and token |
 | GitHub Action `squiggle-render` | Done; CI runs it on the 30 starters |
-| README GIF | `docs/hero.gif` |
-| Launch video | `launch/squiggle-20s-vertical.mp4` and `-horizontal.mp4` (20 s, 30 fps, drawn with the real interpreter); re-rendered once the production URL is confirmed |
-| Deploy to Cloudflare | **Waiting on `wrangler login` with the DRY RUN account.** `node scripts/deploy.mjs --account <id>` then `node scripts/seed.mjs <url>` |
+| Launch assets | 12 seeds on the wall; `launch/squiggle-20s-vertical.mp4` and `launch/squiggle-20s-horizontal.mp4` (20 s, 30 fps); `docs/hero.gif` |
 
-## Checks run
+## Production checks (after the last deploy)
+
+- **Playwright against production: 11 of 11 pass.** Typing with plain errors and the underline, runaway-loop note, share link → code restored and `og:image` points at `/og/c/…`, PNG and 6 s clip downloads, pin → piece page → like → remix → wall, learn goals on desktop and 375 px, all ten learn steps, reference, night print theme. The test piece was hidden afterwards.
+- **Lighthouse (mobile preset) on production: home and /studio score 100 in performance, accessibility, best practices and SEO.** Before the stamp contrast fix (DECISIONS #28), accessibility was 96; performance was 100 on all six runs (LCP 0.8 to 1.4 s).
+- No console errors and no horizontal scroll at 1440 px and 375 px on home, studio, wall, a piece page, learn, reference and the 404.
+- OG cards: fetched as `Twitterbot/1.0`, a piece page carries `og:title`, `og:description`, `og:image` (1200 × 630 PNG), `twitter:card=summary_large_image`, `twitter:image` and `og:url`; the image answers 200 `image/png`. X retired its public card validator, so the last check is pasting a link into the post composer.
+- Pinning in production renders the still and the 45-frame preview into R2 in about 1.5 s per piece.
+- CI on GitHub: all six jobs green (tests, pack, npx on three OSes, the action).
+
+## Local checks
 
 - `npm test`: 547 passed (lexer, parser, interpreter, errors, limits, tidy/squeeze, share links, renderers, reference examples, determinism for 42 pieces, Worker API on Node's SQLite).
 - `npm run typecheck`: clean (core, client, Worker).
-- `npm run e2e` (Playwright, local Worker): 11 passed: typing and plain errors, runaway loop note, share links and their OG tag, PNG and clip download, pin → piece page → like → remix → wall, learn goals on desktop and phone, all 10 learn steps, reference, night print theme.
-- No console errors and no horizontal scroll at 1440 px and 375 px on home, studio, wall, a piece, learn, reference and the 404.
-- Lighthouse (mobile preset, local Worker, which is slower than the edge): home 94 to 99, studio 88 to 98 depending on the run. To be re-measured in production.
-- CI on GitHub: all six jobs green (tests, pack, npx on three OSes, the action).
+
+## For the owner
+
+- **CA chip:** set `TOKEN_MINT` in `site/wrangler.jsonc` (`vars`) and redeploy (`npm run deploy`); empty means the chip shows "CA" and does nothing.
+- **X link in the footer:** points at a search for `#squigglelang`; set `X_URL` to the account once there is one.
+- **npm:** `cd packages/cli && npm run build && npm publish` publishes `squigglelang` (the name was free on 2026-10-27).
+- **Weekly prompt:** the rotation starts with "weather" this week; to choose a theme for a week, insert into D1 `prompts (week, theme)`, e.g. `('2026-W45', 'machines')`.
+- **Moderation:** `POST /api/admin/hide {"id": "…"}` with `Authorization: Bearer <.admin-token>` hides a piece (`"hidden": false` brings it back).
 
 ## Known gaps
 

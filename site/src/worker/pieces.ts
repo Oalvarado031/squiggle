@@ -105,7 +105,8 @@ export async function pin(env: Env, req: Request): Promise<Response> {
   }
   if (blockedWord(words)) return problem(422, "Let's keep the wall friendly: the title or the text in the code has a word the wall doesn't allow.");
 
-  const ip = await ipHash(env, req);
+  // Seed pins from the admin token don't count against anyone's network.
+  const ip = admin ? 'admin' : await ipHash(env, req);
   const now = Date.now();
   if (!admin) {
     const counts = await env.DB.prepare('SELECT SUM(created_at > ?) AS hour, COUNT(*) AS day FROM pieces WHERE ip_hash = ? AND created_at > ?')

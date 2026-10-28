@@ -434,7 +434,8 @@ canvas.stage {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ember);
+  /* the deeper ember keeps small stamp text above 4.5:1 on paper */
+  color: var(--ember-deep);
   border: 2px solid currentColor;
   border-radius: 5px;
   padding: 5px 8px 4px;
