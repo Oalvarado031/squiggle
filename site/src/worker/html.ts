@@ -23,7 +23,8 @@ export async function securityHeaders(h: Headers): Promise<void> {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
-      "connect-src 'self' https://cloudflareinsights.com",
+      // the beacon loads from static.cloudflareinsights.com and reports to cloudflareinsights.com
+      "connect-src 'self' https://static.cloudflareinsights.com https://cloudflareinsights.com",
       "worker-src 'self' blob:",
       "media-src 'self' blob:",
       "frame-ancestors 'none'",

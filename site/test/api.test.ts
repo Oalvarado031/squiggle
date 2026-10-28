@@ -295,3 +295,15 @@ describe('server renders', () => {
 });
 
 vi.setConfig({ testTimeout: 30000 });
+
+describe('content security policy', () => {
+  it("lets Cloudflare's analytics beacon load and report, and nothing else from outside", async () => {
+    const { securityHeaders } = await import('../src/worker/html.ts');
+    const h = new Headers();
+    await securityHeaders(h);
+    const csp = h.get('content-security-policy')!;
+    expect(csp).toMatch(/script-src 'self' 'sha256-[^']+' https:\/\/static\.cloudflareinsights\.com;/);
+    expect(csp).toContain("connect-src 'self' https://static.cloudflareinsights.com https://cloudflareinsights.com;");
+    expect(csp).toContain("frame-ancestors 'none'");
+  });
+});
