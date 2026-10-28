@@ -100,7 +100,7 @@
       "properties": {
         "squiggle.studioUrl": {
           "type": "string",
-          "default": "https://squiggle.oiaj2341.workers.dev",
+          "default": "https://squigglee.online",
           "pattern": "^https?://",
           "patternErrorMessage": "Use a web address that starts with http:// or https://",
           "markdownDescription": "The Squiggle site that **Open in Squiggle Studio** sends your code to (the address without `/studio`). Point it at a local copy, such as `http://localhost:8787`, while working on Squiggle itself."

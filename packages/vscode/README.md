@@ -30,12 +30,12 @@ every frame
 
 | Setting | Default | What it does |
 |---|---|---|
-| `squiggle.studioUrl` | `https://squiggle.oiaj2341.workers.dev` | The Squiggle site that **Open in Squiggle Studio** uses, without `/studio`. Point it at a local copy while working on Squiggle itself. |
+| `squiggle.studioUrl` | `https://squigglee.online` | The Squiggle site that **Open in Squiggle Studio** uses, without `/studio`. Point it at a local copy while working on Squiggle itself. |
 
 New `.sqg` files use two-space indents, Squiggle's house style. Change that per language with `"[squiggle]": { "editor.tabSize": 4 }`.
 
 ## Learn more
 
-- Squiggle Studio: [squiggle.oiaj2341.workers.dev/studio](https://squiggle.oiaj2341.workers.dev/studio)
+- Squiggle Studio: [squigglee.online/studio](https://squigglee.online/studio)
 - The language in one page: [LANGUAGE.md](https://github.com/Oalvarado031/squiggle/blob/main/LANGUAGE.md)
 - Source and issues: [github.com/Oalvarado031/squiggle](https://github.com/Oalvarado031/squiggle)

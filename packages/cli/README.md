@@ -1,6 +1,6 @@
 # squigglelang
 
-The command line for [Squiggle](https://squiggle.oiaj2341.workers.dev), a language where every program is a short moving drawing that fits in one post.
+The command line for [Squiggle](https://squigglee.online), a language where every program is a short moving drawing that fits in one post.
 
 ```
 npx squigglelang render piece.sqg --out piece.png

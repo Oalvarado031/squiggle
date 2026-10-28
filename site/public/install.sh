@@ -1,6 +1,6 @@
 #!/bin/sh
 # Installs the Squiggle command line (squigglelang) with npm.
-#   curl -fsSL https://squiggle.oiaj2341.workers.dev/install.sh | sh
+#   curl -fsSL https://squigglee.online/install.sh | sh
 # It only runs `npm install -g squigglelang`; read it first if you like.
 set -e
 

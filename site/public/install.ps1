@@ -1,5 +1,5 @@
 # Installs the Squiggle command line (squigglelang) with npm.
-#   irm https://squiggle.oiaj2341.workers.dev/install.ps1 | iex
+#   irm https://squigglee.online/install.ps1 | iex
 # It only runs `npm install -g squigglelang`; read it first if you like.
 $ErrorActionPreference = 'Stop'
 

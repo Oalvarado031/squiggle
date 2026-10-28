@@ -90,6 +90,12 @@ const HTML_PAGES = new Set(['/', '/studio', '/wall', '/learn', '/reference']);
 
 async function handle(req: Request, env: Env): Promise<Response> {
   const url = new URL(req.url);
+  // www, and (once CANONICAL_HOST is set) the workers.dev address, lead to the one real address.
+  const canonical = env.CANONICAL_HOST || 'squigglee.online';
+  if (url.hostname === `www.${canonical}` || (env.CANONICAL_HOST && url.hostname.endsWith('.workers.dev') && !url.pathname.startsWith('/api/'))) {
+    url.hostname = canonical;
+    return Response.redirect(url.toString(), 301);
+  }
   const path = url.pathname.replace(/\/+$/, '') || '/';
   const origin = url.origin;
 

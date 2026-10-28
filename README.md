@@ -56,11 +56,11 @@ npx squigglelang squeeze tide.sqg                                # shortest safe
 Install it for good with `npm i -g squigglelang`, or with the helper scripts (they only wrap npm):
 
 ```
-curl -fsSL https://squiggle.oiaj2341.workers.dev/install.sh | sh          # macOS, Linux
-irm https://squiggle.oiaj2341.workers.dev/install.ps1 | iex               # Windows PowerShell
+curl -fsSL https://squigglee.online/install.sh | sh          # macOS, Linux
+irm https://squigglee.online/install.ps1 | iex               # Windows PowerShell
 ```
 
-**VS Code**: download [squiggle.vsix](https://squiggle.oiaj2341.workers.dev/downloads/squiggle.vsix) and run *Extensions: Install from VSIX…*. You get highlighting, snippets, a post counter in the status bar, and *Open in Squiggle Studio*.
+**VS Code**: download [squiggle.vsix](https://squigglee.online/downloads/squiggle.vsix) and run *Extensions: Install from VSIX…*. You get highlighting, snippets, a post counter in the status bar, and *Open in Squiggle Studio*.
 
 **GitHub Action**: render every `.sqg` in a repo to PNG on push. See [action/squiggle-render](action/squiggle-render/README.md).
 

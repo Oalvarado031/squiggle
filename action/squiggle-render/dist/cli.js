@@ -2704,7 +2704,7 @@ var SITE_URL;
 var init_site = __esm({
   "../core/src/site.ts"() {
     "use strict";
-    SITE_URL = "https://squiggle.oiaj2341.workers.dev";
+    SITE_URL = "https://squigglee.online";
   }
 });
 
