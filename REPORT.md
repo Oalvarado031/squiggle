@@ -1,5 +1,18 @@
 # Report
 
+## v1.0.1: fixes from the live review (2026-10-28)
+
+| Done when | State |
+|---|---|
+| `npx squigglelang render` works on three OSes, or home no longer shows the command | **Home no longer shows it**: "CLI coming soon" until npm has the package, then the command appears by itself (DECISIONS #35). The publish workflow (provenance, then `npx squigglelang render examples/tide.sqg` on Linux, macOS and Windows) is ready and waits for the `NPM_TOKEN` secret. |
+| No trace of the old GitHub username in the site, packages or repo metadata | **Done.** Links come from `squiggle.config.json` (DECISIONS #31). 0 matches in tracked files, the built site, the CLI and action bundles, the `.vsix`, and 670 KB of live pages, scripts and downloads. CI fails if one comes back. |
+| Seed pieces don't link to accounts we don't own | **Done.** The 12 seeds (and the 3 prompt pieces) are house pieces: "by squiggle", no link while `X_URL` is empty, OG cards redrawn (DECISIONS #32). |
+| The weather prompt shows 3 entries | **Done.** downpour, lightning, morning fog (DECISIONS #33). |
+| "Post on X" carries the code when it fits | **Done** on piece pages and in the studio's new "pinned" view: downpour and lightning post their code and the link; paper boat (276) keeps the title text (DECISIONS #34). |
+| No console errors, checked at 375 px | **Done.** The CSP allows Cloudflare's beacon in `script-src` and `connect-src` (DECISIONS #30). Checked in Google Chrome at 375 px on home, studio, wall, the prompt tab, three piece pages, learn and reference: 0 errors, no sideways scroll. |
+
+After the deploy: `npm test` 563 passed; Playwright against https://squigglee.online 17 of 17 (desktop and 375 px); test pieces hidden afterwards.
+
 Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squiggle.oiaj2341.workers.dev redirect there) · Source: the public GitHub repository set as `repoUrl` in `squiggle.config.json` (MIT).
 
 | Part | State |
@@ -8,7 +21,7 @@ Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squig
 | Studio: CodeMirror editor, live canvas in a Web Worker, post meter, share links, PNG, MP4/GIF clip, pin | **Live**; MP4 export checked in Chromium and Google Chrome |
 | Wall: pin, server renders, previews playing in view, likes, new / top today / top week, remix family, weekly prompt, OG cards | **Live**, with the 12 seed pieces pinned as @squiggle |
 | Learn (10 steps) and reference | **Live**; all ten steps and every reference example run in the e2e suite |
-| 30 starters, 12 seeds | Done; all fit in a post |
+| 30 starters, 12 seeds, 3 weather prompt pieces | Done; all fit in a post; frame hashes pinned for all 45 |
 | CLI `squigglelang` | Done. CI renders PNG, MP4 and GIF through `npx` from the packed tarball on Ubuntu, macOS and Windows. **Not published to npm** (owner's decision): until it is, `npx squigglelang` from the registry and the install scripts won't find it |
 | Install scripts | Served at `/install.sh` and `/install.ps1` (they only run `npm i -g squigglelang`) |
 | VS Code extension | `.vsix` (16.5 KB) at `/downloads/squiggle.vsix`; installs in VS Code (checked with a throwaway profile). Not on the Marketplace: that needs a publisher account and token |
