@@ -1,0 +1,11 @@
+paper bone
+every frame
+ repeat 5 as k
+  repeat 7
+   x=i*80-240+k*37%80
+   y=40-k*50
+   shape [(x,y),(x-26,y-96),(x+26,y-96)],mix(ash,coal,k/4)
+  p=[(-256,-256)]
+  repeat 17
+   p=p+[(i*32-256,noise(i/3,k,t/4)*30+y-60)]
+  shape p+[(256,-256)],fade(bone,.6)

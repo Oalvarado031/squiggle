@@ -75,6 +75,13 @@ export async function allow(env: Env, key: string, limit: number): Promise<boole
   return true;
 }
 
+/** true enters this week's prompt; the admin token may also name a week ("2026-W44") */
+function promptWeek(value: unknown, admin: boolean, now: number): string | null {
+  if (value === true) return weekId(now);
+  if (admin && typeof value === 'string' && /^\d{4}-W\d{2}$/.test(value)) return value;
+  return null;
+}
+
 // ---- pin ----
 
 export async function pin(env: Env, req: Request): Promise<Response> {
@@ -144,7 +151,7 @@ export async function pin(env: Env, req: Request): Promise<Response> {
     env.DB.prepare(
       `INSERT INTO pieces (id, code, code_hash, title, handle, house, chars, animated, interactive, parent_id, prompt_week, preview_frames, preview_fps, preview_cols, preview_cell, ip_hash, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    ).bind(id, code, codeHash, title, handle, house ? 1 : 0, postLength(code), r.animated ? 1 : 0, r.interactive ? 1 : 0, parentRow?.id ?? null, body.prompt === true ? weekId(now) : null, r.frames, r.fps, r.cols, r.cell, ip, now),
+    ).bind(id, code, codeHash, title, handle, house ? 1 : 0, postLength(code), r.animated ? 1 : 0, r.interactive ? 1 : 0, parentRow?.id ?? null, promptWeek(body.prompt, admin, now), r.frames, r.fps, r.cols, r.cell, ip, now),
   ];
   if (parentRow) stmts.push(env.DB.prepare('UPDATE pieces SET remixes = remixes + 1 WHERE id = ?').bind(parentRow.id));
   await env.DB.batch(stmts);

@@ -321,3 +321,45 @@ describe('content security policy', () => {
     expect(csp).toContain("frame-ancestors 'none'");
   });
 });
+
+describe('the prompt after its first week', () => {
+  const DAY = 86_400_000;
+  const admin = { authorization: 'Bearer admin-secret' };
+
+  it('rotates to a new theme every Monday and wraps around the list', () => {
+    const w44 = Date.UTC(2026, 9, 27);
+    const themes = Array.from({ length: 22 }, (_, k) => rotationTheme(w44 + k * 7 * DAY));
+    expect(themes.slice(0, 3)).toEqual(['weather', 'machines', 'tides']);
+    expect(themes[20]).toBe('weather');
+    expect(new Set(themes.slice(0, 20)).size).toBe(20);
+    expect(weekId(w44 + 7 * DAY)).toBe('2026-W45');
+  });
+
+  it("lists only the current week's entries, so last week's don't linger", async () => {
+    const now = Date.now();
+    await pin(env, req('/api/pieces', { code: 'dot 1, 1, 9', title: 'old', house: true, prompt: weekId(now - 7 * DAY) }, undefined, admin));
+    await pin(env, req('/api/pieces', { code: 'dot 2, 2, 9', title: 'new', house: true, prompt: weekId(now) }, undefined, admin));
+    const r = (await (await list(env, new URL('https://x/api/pieces?prompt=now'))).json()) as { pieces: Array<{ title: string }>; week: string };
+    expect(r.pieces.map((p) => p.title)).toEqual(['new']);
+    expect(r.week).toBe(weekId(now));
+    const past = (await (await list(env, new URL(`https://x/api/pieces?prompt=${weekId(now - 7 * DAY)}`))).json()) as { pieces: Array<{ title: string }> };
+    expect(past.pieces.map((p) => p.title)).toEqual(['old']);
+  });
+
+  it('lets only the admin token name a prompt week', async () => {
+    const res = await pin(env, req('/api/pieces', { code: ORBIT, title: 'x', prompt: '2020-W01' }));
+    const { id } = (await res.json()) as { id: string };
+    expect(env.DB.raw.prepare('SELECT prompt_week FROM pieces WHERE id = ?').get(id)).toEqual({ prompt_week: null });
+  });
+
+  it("keeps house pieces out of the week's top three", async () => {
+    const lastWeek = weekStart(Date.now()) - DAY;
+    const week = weekId(lastWeek);
+    const h = (await (await pin(env, req('/api/pieces', { code: 'dot 3, 3, 9', title: 'house', house: true, prompt: week }, undefined, admin))).json()) as { id: string };
+    const p = await pinOk({ code: 'dot 4, 4, 9', title: 'person' });
+    env.DB.raw.prepare('UPDATE pieces SET likes = 50 WHERE id = ?').run(h.id);
+    env.DB.raw.prepare('UPDATE pieces SET prompt_week = ?, likes = 2 WHERE id = ?').run(week, p.id);
+    await finalizeWeek(env, lastWeek);
+    expect(env.DB.raw.prepare('SELECT piece_id FROM prompt_winners WHERE week = ?').all(week).map((r) => ({ ...r }))).toEqual([{ piece_id: p.id }]);
+  });
+});

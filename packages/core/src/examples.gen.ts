@@ -220,3 +220,25 @@ export const SEEDS: Example[] = [
     "code": "paper night\nevery frame\n  spin t * turn / 9\n  repeat 150\n    u = i / 150 * turn\n    z = -sin(3 * u)\n    dot (sin(u) + 2 * sin(2 * u)) * 62, (cos(u) - 2 * cos(2 * u)) * 62, 7 + z * 2, mix(plum, ember, z / 2 + 0.5)\n"
   }
 ];
+
+/** House pieces that open a weekly prompt, by ISO week. */
+export const PROMPT_PIECES: Array<Example & { week: string }> = [
+  {
+    "slug": "downpour",
+    "title": "downpour",
+    "code": "paper night\nevery frame\n repeat 90\n  x=i*97%560-280\n  y=256-(i*53+t*420)%560\n  line x,y,x-6,y-24,ash\n repeat 6\n  r=(t*40+i*37)%60\n  keep\n   move i*90-225,-205\n   grow 1,.3\n   ring 0,0,r,fade(sky,1-r/60)\n",
+    "week": "2026-W44"
+  },
+  {
+    "slug": "lightning",
+    "title": "lightning",
+    "code": "paper night\nevery frame\n f=(t+1.5)%2.5\n if f<.3\n  paper mix(night,lilac,.6-f*2)\n  seed floor(t/2.5)\n  p=(rand(-99,99),230)\n  repeat 12\n   q=p+(rand(-44,44),-40)\n   width 6-i/2.4\n   line p,q,chalk\n   p=q\n repeat 9\n  dot i*64-256,240+sin(i*3)*18,64,coal\n",
+    "week": "2026-W44"
+  },
+  {
+    "slug": "morning-fog",
+    "title": "morning fog",
+    "code": "paper bone\nevery frame\n repeat 5 as k\n  repeat 7\n   x=i*80-240+k*37%80\n   y=40-k*50\n   shape [(x,y),(x-26,y-96),(x+26,y-96)],mix(ash,coal,k/4)\n  p=[(-256,-256)]\n  repeat 17\n   p=p+[(i*32-256,noise(i/3,k,t/4)*30+y-60)]\n  shape p+[(256,-256)],fade(bone,.6)\n",
+    "week": "2026-W44"
+  }
+];

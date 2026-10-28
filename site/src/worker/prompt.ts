@@ -56,7 +56,8 @@ export async function finalizeWeek(env: Env, ms: number): Promise<void> {
   if (weekStart(ms) + 7 * DAY > Date.now()) return; // not over yet
   const done = await env.DB.prepare('SELECT COUNT(*) AS n FROM prompt_winners WHERE week = ?').bind(week).first<{ n: number }>();
   if (done && done.n > 0) return;
-  const top = await env.DB.prepare('SELECT id, likes FROM pieces WHERE prompt_week = ? AND hidden = 0 AND likes > 0 ORDER BY likes DESC, created_at ASC LIMIT 3')
+  // House pieces open the prompt but don't compete for its stamps.
+  const top = await env.DB.prepare('SELECT id, likes FROM pieces WHERE prompt_week = ? AND hidden = 0 AND house = 0 AND likes > 0 ORDER BY likes DESC, created_at ASC LIMIT 3')
     .bind(week)
     .all<{ id: string; likes: number }>();
   if (!top.results.length) return;

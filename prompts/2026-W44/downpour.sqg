@@ -1,0 +1,12 @@
+paper night
+every frame
+ repeat 90
+  x=i*97%560-280
+  y=256-(i*53+t*420)%560
+  line x,y,x-6,y-24,ash
+ repeat 6
+  r=(t*40+i*37)%60
+  keep
+   move i*90-225,-205
+   grow 1,.3
+   ring 0,0,r,fade(sky,1-r/60)

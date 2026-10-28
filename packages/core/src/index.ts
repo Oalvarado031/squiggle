@@ -18,5 +18,5 @@ export function render(code: string, t = 0, limits?: Partial<Limits>): Frame {
 export { tidy, squeeze, type SqueezeResult } from './format.ts';
 export { highlight, highlightHtml, classify, type TokenClass } from './highlight.ts';
 export { SITE_URL, studioLink } from './site.ts';
-export { EXAMPLES, SEEDS, type Example } from './examples.gen.ts';
+export { EXAMPLES, SEEDS, PROMPT_PIECES, type Example } from './examples.gen.ts';
 export { LOGO_PATH, LOGO_VIEWBOX, LOGO_STROKE, BRAND } from './brand.ts';

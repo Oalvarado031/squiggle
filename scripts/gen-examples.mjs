@@ -1,4 +1,4 @@
-// examples/*.sqg and seeds/*.sqg → packages/core/src/examples.gen.ts
+// examples/*.sqg, seeds/*.sqg and prompts/<week>/*.sqg → packages/core/src/examples.gen.ts
 // A file's name is its slug; its title is the slug with spaces. Seeds may set a title
 // on their first line as  // title: …  (the comment is stripped from the code).
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -36,6 +36,15 @@ export interface Example {
 export const EXAMPLES: Example[] = ${JSON.stringify(load('examples'), null, 2)};
 
 export const SEEDS: Example[] = ${JSON.stringify(load('seeds'), null, 2)};
+
+/** House pieces that open a weekly prompt, by ISO week. */
+export const PROMPT_PIECES: Array<Example & { week: string }> = ${JSON.stringify(
+  (existsSync(join(root, 'prompts')) ? readdirSync(join(root, 'prompts')).filter((w) => /^\d{4}-W\d{2}$/.test(w)).sort() : []).flatMap((week) =>
+    load(`prompts/${week}`).map((e) => ({ ...e, week })),
+  ),
+  null,
+  2,
+)};
 `;
 writeFileSync(join(root, 'packages/core/src/examples.gen.ts'), out);
 console.log('examples.gen.ts written');

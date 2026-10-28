@@ -153,3 +153,11 @@ test('house pieces say "by squiggle" and never link to an X account we don\'t ow
   await expect(page.locator('a[href*="x.com/squiggle"]')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('the weather prompt (2026-W44) has entries', async ({ page }) => {
+  await page.goto('/wall?prompt=2026-W44');
+  await expect(page.locator('.card')).toHaveCount(3, { timeout: 15_000 }).catch(async () => {
+    expect(await page.locator('.card').count()).toBeGreaterThanOrEqual(3);
+  });
+  await expect(page.locator('.empty')).toHaveCount(0);
+});

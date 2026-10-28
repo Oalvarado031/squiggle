@@ -2,9 +2,9 @@
 // pinned in a snapshot: a change to the interpreter that moves a single shape fails here.
 
 import { describe, expect, it } from 'vitest';
-import { EXAMPLES, SEEDS, Interp, hashOps, postLength, POST_LIMIT, VOCAB_CHECK } from './determinism-helpers.ts';
+import { EXAMPLES, SEEDS, PROMPT_PIECES, Interp, hashOps, postLength, POST_LIMIT, VOCAB_CHECK } from './determinism-helpers.ts';
 
-const pieces = [...EXAMPLES, ...SEEDS.map((s) => ({ ...s, slug: `seed/${s.slug}` }))];
+const pieces = [...EXAMPLES, ...SEEDS.map((s) => ({ ...s, slug: `seed/${s.slug}` })), ...PROMPT_PIECES.map((p) => ({ ...p, slug: `prompt/${p.week}/${p.slug}` }))];
 
 describe('determinism', () => {
   it('has the starter pieces', () => {

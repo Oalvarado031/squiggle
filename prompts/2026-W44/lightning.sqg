@@ -1,0 +1,14 @@
+paper night
+every frame
+ f=(t+1.5)%2.5
+ if f<.3
+  paper mix(night,lilac,.6-f*2)
+  seed floor(t/2.5)
+  p=(rand(-99,99),230)
+  repeat 12
+   q=p+(rand(-44,44),-40)
+   width 6-i/2.4
+   line p,q,chalk
+   p=q
+ repeat 9
+  dot i*64-256,240+sin(i*3)*18,64,coal

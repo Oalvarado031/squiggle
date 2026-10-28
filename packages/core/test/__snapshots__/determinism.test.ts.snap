@@ -209,6 +209,39 @@ exports[`determinism > pond: frame hashes at t = 0, 1, 2 1`] = `
 }
 `;
 
+exports[`determinism > prompt/2026-W44/downpour: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "dcb1edd2eef2d5be",
+    "53938f46cc4b04a7",
+    "bb1a4d155e92fc03",
+  ],
+  "slug": "prompt/2026-W44/downpour",
+}
+`;
+
+exports[`determinism > prompt/2026-W44/lightning: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "9e36383ffaefcbcb",
+    "9df63c1101438b0b",
+    "9e36383ffaefcbcb",
+  ],
+  "slug": "prompt/2026-W44/lightning",
+}
+`;
+
+exports[`determinism > prompt/2026-W44/morning-fog: frame hashes at t = 0, 1, 2 1`] = `
+{
+  "hashes": [
+    "408eba90fdb127f6",
+    "cfbe730a9ead9d96",
+    "f5093e34663a9d54",
+  ],
+  "slug": "prompt/2026-W44/morning-fog",
+}
+`;
+
 exports[`determinism > rain-on-a-window: frame hashes at t = 0, 1, 2 1`] = `
 {
   "hashes": [
