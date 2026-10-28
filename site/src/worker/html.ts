@@ -40,6 +40,8 @@ export async function securityHeaders(h: Headers): Promise<void> {
 }
 
 export interface PageData {
+  /** squigglelang is on npm: show the command, otherwise "coming soon" */
+  cli?: boolean;
   title?: string;
   description?: string;
   image?: string;
@@ -115,6 +117,18 @@ export async function page(env: Env, res: Response, origin: string, p: PageData,
     .on('a[data-link="repo-action"]', new Link(links(env).repo && `${links(env).repo}/tree/main/action/squiggle-render`))
     .on('a[data-link="x"]', new Link(links(env).x))
     .on('[data-link="author"]', new Author(env.AUTHOR_NAME ?? '', env.AUTHOR_URL ?? ''));
+  rw = rw
+    .on('[data-cli="soon"]', {
+      element(el) {
+        if (p.cli) el.remove();
+      },
+    })
+    .on('[data-cli="ready"]', {
+      element(el) {
+        if (p.cli) el.removeAttribute('hidden');
+        else el.remove();
+      },
+    });
   const image = p.image ? new URL(p.image, origin).toString() : `${origin}/og/site.png`;
   rw = rw.on('meta[property="og:image"]', new Attr('content', image));
   if (p.title) {

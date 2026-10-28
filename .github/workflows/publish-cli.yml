@@ -1,0 +1,66 @@
+name: publish squigglelang
+
+# Publishes the CLI to npm with provenance, then checks that `npx squigglelang` renders a
+# PNG on Linux, macOS and Windows. Needs an npm automation token in the NPM_TOKEN secret.
+# Run it from the Actions tab, or push a tag like cli-v0.1.0.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['cli-v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:cli
+      - id: version
+        working-directory: packages/cli
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      # Provenance needs the package to name the repository that builds it, whichever account owns it.
+      - name: Point the package at this repository
+        working-directory: packages/cli
+        run: |
+          npm pkg set repository.type=git "repository.url=git+https://github.com/${GITHUB_REPOSITORY}.git" repository.directory=packages/cli
+          npm pkg set "bugs.url=https://github.com/${GITHUB_REPOSITORY}/issues"
+      - name: Publish with provenance
+        working-directory: packages/cli
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  smoke:
+    name: npx squigglelang on ${{ matrix.os }}
+    needs: publish
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - name: Render from the registry
+        shell: bash
+        run: |
+          # the registry can take a minute to serve a new version everywhere
+          for i in 1 2 3 4 5 6; do
+            npx --yes "squigglelang@${{ needs.publish.outputs.version }}" render examples/tide.sqg --out tide.png && break
+            sleep 20
+          done
+          node -e "const b=require('fs').readFileSync('tide.png');if(b.toString('latin1',1,4)!=='PNG')process.exit(1);console.log('tide.png',b.length,'bytes')"

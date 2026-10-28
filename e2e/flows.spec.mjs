@@ -166,3 +166,14 @@ test('the weather prompt (2026-W44) has entries', async ({ page }) => {
   });
   await expect(page.locator('.empty')).toHaveCount(0);
 });
+
+test('home only offers the npx command once squigglelang is on npm', async ({ page, request }) => {
+  const onNpm = (await request.get('https://registry.npmjs.org/squigglelang')).ok();
+  await page.goto('/');
+  if (onNpm) {
+    await expect(page.locator('#anywhere')).toContainText('npx squigglelang render');
+  } else {
+    await expect(page.locator('#anywhere')).toContainText('CLI coming soon');
+    await expect(page.locator('#anywhere')).not.toContainText('npx squigglelang');
+  }
+});

@@ -16,6 +16,11 @@ if [ "$major" -lt 18 ]; then
   exit 1
 fi
 
+if ! npm view squigglelang version >/dev/null 2>&1; then
+  echo "squigglelang isn't on npm yet. Check back soon, or build it from the Squiggle repository."
+  exit 1
+fi
+
 echo "Installing squigglelang with npm…"
 npm install -g squigglelang
 

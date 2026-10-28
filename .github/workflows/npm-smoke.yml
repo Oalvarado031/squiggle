@@ -1,0 +1,38 @@
+name: npx squigglelang smoke test
+
+# Once squigglelang is on npm (however it got there), check every day that
+# `npx squigglelang render examples/tide.sqg` works on Linux, macOS and Windows.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.registry.outputs.published }}
+    steps:
+      - id: registry
+        run: |
+          if npm view squigglelang version >/dev/null 2>&1; then echo "published=true" >> "$GITHUB_OUTPUT"
+          else echo "published=false" >> "$GITHUB_OUTPUT"; echo "::notice::squigglelang isn't on npm yet; nothing to test"; fi
+
+  smoke:
+    name: npx squigglelang on ${{ matrix.os }}
+    needs: check
+    if: needs.check.outputs.published == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - shell: bash
+        run: |
+          npx --yes squigglelang render examples/tide.sqg --out tide.png
+          node -e "const b=require('fs').readFileSync('tide.png');if(b.toString('latin1',1,4)!=='PNG')process.exit(1);console.log('tide.png',b.length,'bytes')"

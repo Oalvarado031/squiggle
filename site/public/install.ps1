@@ -15,6 +15,12 @@ if ($major -lt 18) {
   exit 1
 }
 
+npm view squigglelang version *> $null
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "squigglelang isn't on npm yet. Check back soon, or build it from the Squiggle repository."
+  exit 1
+}
+
 Write-Host 'Installing squigglelang with npm...'
 npm install -g squigglelang
 

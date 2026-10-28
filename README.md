@@ -53,6 +53,8 @@ npx squigglelang tidy tide.sqg -w                                # standard layo
 npx squigglelang squeeze tide.sqg                                # shortest safe version + count
 ```
 
+> Until `squigglelang` is published on npm, run the CLI from this repository: `npm install && npm run build:cli && node packages/cli/bin/squiggle.js render examples/tide.sqg --out tide.png`.
+
 Install it for good with `npm i -g squigglelang`, or with the helper scripts (they only wrap npm):
 
 ```

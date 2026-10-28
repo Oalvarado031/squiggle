@@ -34,7 +34,7 @@ Status as of 2026-10-28 (UTC). **Live: https://squigglee.online** (www and squig
 
 - **CA chip:** set `TOKEN_MINT` in `site/wrangler.jsonc` (`vars`) and redeploy (`npm run deploy`); empty means the chip shows "CA" and does nothing.
 - **Links (repository, X account, author):** edit `squiggle.config.json`, run `npm run sync-config`, then `npm run deploy`. Empty values hide the link. Today the repository and X account are empty, so the footer shows neither.
-- **npm:** `cd packages/cli && npm run build && npm publish` publishes `squigglelang` (the name was free on 2026-10-27). It already points at squigglee.online.
+- **npm (squigglelang):** create an npm automation token, add it to the GitHub repository as the `NPM_TOKEN` secret, then run **Actions → publish squigglelang → Run workflow** (or push a tag `cli-v0.1.0`). It publishes with provenance and checks `npx squigglelang render examples/tide.sqg` on Linux, macOS and Windows. The home page switches from "CLI coming soon" to the command by itself within 10 minutes. Publishing by hand (`cd packages/cli && npm run build && npm publish --access public`) also works, without provenance.
 - **Analytics:** Cloudflare injects its cookie-free Web Analytics on the custom domain (the CSP allows it). Turn it off in the dashboard under Web Analytics if you don't want it.
 - **Weekly prompt:** the rotation starts with "weather" this week; to choose a theme for a week, insert into D1 `prompts (week, theme)`, e.g. `('2026-W45', 'machines')`.
 - **Moderation:** `POST /api/admin/hide {"id": "…"}` with `Authorization: Bearer <.admin-token>` hides a piece (`"hidden": false` brings it back).

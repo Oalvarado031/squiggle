@@ -89,6 +89,26 @@ async function notFound(env: Env, req: Request, origin: string, theme: string): 
 
 const HTML_PAGES = new Set(['/', '/studio', '/wall', '/learn', '/reference']);
 
+// Is squigglelang on npm yet? Asked of the registry at most every 10 minutes.
+let npmMemo: { published: boolean; until: number } | null = null;
+async function cliPublished(env: Env): Promise<boolean> {
+  if (npmMemo && npmMemo.until > Date.now()) return npmMemo.published;
+  let published = false;
+  const kv = await env.KV.get('npm:squigglelang');
+  if (kv !== null) published = kv === '1';
+  else {
+    try {
+      const res = await fetch('https://registry.npmjs.org/squigglelang', { headers: { accept: 'application/vnd.npm.install-v1+json' }, cf: { cacheTtl: 300 } } as RequestInit);
+      published = res.ok;
+    } catch {
+      published = false;
+    }
+    await env.KV.put('npm:squigglelang', published ? '1' : '0', { expirationTtl: 600 });
+  }
+  npmMemo = { published, until: Date.now() + 120_000 };
+  return published;
+}
+
 async function handle(req: Request, env: Env): Promise<Response> {
   const url = new URL(req.url);
   // www, and (once CANONICAL_HOST is set) the workers.dev address, lead to the one real address.
@@ -109,7 +129,7 @@ async function handle(req: Request, env: Env): Promise<Response> {
     }
     if (path === '/api/pieces' && req.method === 'GET') return list(env, url);
     if (path === '/api/prompt') return promptInfo(env);
-    if (path === '/api/config') return json({ mint: env.TOKEN_MINT ?? '' }, 200, { 'cache-control': 'public, max-age=60' });
+    if (path === '/api/config') return json({ mint: env.TOKEN_MINT ?? '', cli: await cliPublished(env), links: links(env) }, 200, { 'cache-control': 'public, max-age=60' });
     if (path === '/api/admin/hide' && req.method === 'POST') return hide(env, req);
     let m = /^\/api\/pieces\/([a-z0-9]+)$/.exec(path);
     if (m && req.method === 'GET') {
@@ -154,7 +174,7 @@ async function handle(req: Request, env: Env): Promise<Response> {
     if (c && /^[A-Za-z0-9_-]{1,8000}$/.test(c)) {
       return page(env, res, origin, { theme, title: 'A Squiggle piece', description: 'Open it in the Squiggle studio to watch it move and read the code.', image: `/og/c/${c}.png` });
     }
-    return page(env, res, origin, { theme, canonical: path });
+    return page(env, res, origin, { theme, canonical: path, cli: path === '/' ? await cliPublished(env) : undefined });
   }
 
   // ---- everything else is a static file ----
